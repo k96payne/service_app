@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">service_app</string>
+    <string name="sign_up_button">sign up</string>
 </resources>
