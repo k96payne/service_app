@@ -17,4 +17,9 @@ public class login_view extends AppCompatActivity {
         Intent user_login = new Intent(this, MainActivity.class);
         startActivity(user_login);
     }
+
+    public void move_to_sign_up(View view){
+        Intent move_user_to_sign_up = new Intent(this, signup_view.class);
+        startActivity(move_user_to_sign_up);
+    }
 }
