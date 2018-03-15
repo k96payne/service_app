@@ -28,6 +28,13 @@ public class login_view extends AppCompatActivity implements ILogin {
 
         this.emailField = (EditText)findViewById(R.id.emailField);
         this.passwordField = (EditText)findViewById(R.id.passwordField);
+
+        FirebaseUser currentUser = this.userRepository.GetCurrentUser();
+
+        //If the user is currently logged in, move them past the login/signup page.
+        if(currentUser != null) {
+            this.move_to_main_view();
+        }
     }
 
     public void login(View view) {
@@ -43,12 +50,16 @@ public class login_view extends AppCompatActivity implements ILogin {
         startActivity(move_user_to_sign_up);
     }
 
+    public void move_to_main_view() {
+        Intent user_login = new Intent(this, MainActivity.class);
+        startActivity(user_login);
+    }
+
     public void onLoginSuccessful(FirebaseUser user) {
 
         Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_LONG).show();
 
-        Intent user_login = new Intent(this, MainActivity.class);
-        startActivity(user_login);
+        this.move_to_main_view();
     }
 
     public void onLoginFailed(String error) {

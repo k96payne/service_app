@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.group12.service_app.core.repositories.*;
+import com.group12.service_app.core.repositories.interfaces.*;
+import com.group12.service_app.data.models.Listing;
+
+import java.util.UUID;
+
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -18,7 +24,7 @@ import android.widget.TextView;
 // * Use the {@link SearchListingFragment#newInstance} factory method to
 // * create an instance of this fragment.
 // */
-public class SearchListingFragment extends Fragment {
+public class SearchListingFragment extends Fragment implements IListingReader {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -30,10 +36,40 @@ public class SearchListingFragment extends Fragment {
 
 //    private OnFragmentInteractionListener mListener;
 
-
+    public ListingRepository ListingRepository = new ListingRepository();
 
     public SearchListingFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        this.ListingRepository.GetAllListings(this);
+    }
+
+    public void onNewListing(Listing listing) {
+        printListing(listing);
+    }
+
+    public void onListingModified(Listing listing) {
+        printListing(listing);
+    }
+
+    public void onListingRemoved(Listing listing) {
+        printListing(listing);
+    }
+
+    public void onListingMoved(Listing listing) {
+        printListing(listing);
+    }
+
+    private void printListing(Listing listing) {
+        if(listing == null) { return; }
+        String title = listing.title;
+        String description = listing.description;
+        System.out.println(title + ": " + description);
     }
 
 //    /**
@@ -64,8 +100,8 @@ public class SearchListingFragment extends Fragment {
 //    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_listing, container, false);
     }

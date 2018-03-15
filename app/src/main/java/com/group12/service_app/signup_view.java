@@ -16,6 +16,7 @@ public class signup_view extends AppCompatActivity implements ISignup {
 
     private UserRepository userRepository = new UserRepository();
 
+    private EditText displayNameField;
     private EditText emailField;
     private EditText passwordField;
 
@@ -27,16 +28,18 @@ public class signup_view extends AppCompatActivity implements ISignup {
         //Set up our repositories.
         this.userRepository.SignupDelegate = this;
 
+        this.displayNameField = (EditText)findViewById(R.id.displayNameField);
         this.emailField = (EditText)findViewById(R.id.emailField);
         this.passwordField = (EditText)findViewById(R.id.passwordField);
     }
 
     public void signup_user(View view){
 
+        String displayName = this.displayNameField.getText().toString();
         String email = this.emailField.getText().toString();
         String password = this.passwordField.getText().toString();
 
-        this.userRepository.CreateUser(email, password);
+        this.userRepository.CreateUser(email, password, displayName);
 
         Intent login = new Intent(this, login_view.class);
         startActivity(login);
