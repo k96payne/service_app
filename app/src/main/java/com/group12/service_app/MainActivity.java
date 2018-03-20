@@ -2,9 +2,9 @@ package com.group12.service_app;
 
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         //bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
 
-        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getFragmentManager();
 
 
 
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.addToBackStack(null);
                 transaction.replace(R.id.bottomBar, fragment).commit();
                 return true;
             }

@@ -1,5 +1,7 @@
 package com.group12.service_app.core.repositories;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +26,7 @@ public class ListingRepository {
     private IListingReader listingReaderDelegate;
 
     public void CreateListing(Listing listing) {
+        Log.d("listing created", "onNewListing: listing created");
         this.listingsReference.push().setValue(listing);
     }
 
