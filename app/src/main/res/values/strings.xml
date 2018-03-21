@@ -11,4 +11,18 @@
     <string name="signup_username">Username</string>
     <string name="password_input">Password</string>
     <string name="signup_password">Password</string>
+    <string name="title_activity_listing_details_view">listing_details_view</string>
+    <string name="listingName">Listing Name</string>
+    <string name="respondToListing">Respond</string>
+    <string name="providerName">Provider Name</string>
+    <string name="payoffAmount">Payoff Amount:</string>
+    <string name="payoffPrice">$$$$$</string>
+    <string name="listingDate">Date</string>
+    <string name="dueDate">01/01/2018</string>
+    <string name="listingTime">Time</string>
+    <string name="dueTime">12:00PM - 12:01PM</string>
+    <string name="listingAddress">Address</string>
+    <string name="dueAddress">123 Anywhere Street, Anywhere USA, 12345</string>
+    <string name="listingDescription">Description</string>
+    <string name="dueDescription">This is a basic description for a listing I am making is 2 lines (hopefully) to see how well it looks.</string>
 </resources>
