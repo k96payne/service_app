@@ -19,6 +19,8 @@ public class listings_view extends AppCompatActivity implements IListingReader {
 
     public void onNewListing(Listing listing) {
         String test = "";
+
+        listing.title = test;
     }
 
     public void onListingModified(Listing listing) {

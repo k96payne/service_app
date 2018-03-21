@@ -11,6 +11,13 @@
     <string name="signup_username">Username</string>
     <string name="password_input">Password</string>
     <string name="signup_password">Password</string>
+    <string name="listing_title">Title</string>
+    <string name="listing_price">Price</string>
+    <string name="listing_category">Category</string>
+    <string name="listing_location">Location</string>
+    <string name="listing_contact_info">Contact</string>
+    <string name="listing_description">Description</string>
+    <string name="create_listing">Create Listing</string>
     <string name="title_activity_listing_details_view">listing_details_view</string>
     <string name="listingName">Listing Name</string>
     <string name="respondToListing">Respond</string>

@@ -3,12 +3,18 @@ package com.group12.service_app;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.group12.service_app.core.repositories.ListingRepository;
+import com.group12.service_app.core.repositories.interfaces.IListingReader;
+import com.group12.service_app.data.models.Listing;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -18,7 +24,7 @@ import android.widget.TextView;
 // * Use the {@link CreateListingFragment#newInstance} factory method to
 // * create an instance of this fragment.
 // */
-public class CreateListingFragment extends Fragment {
+public class CreateListingFragment extends Fragment implements IListingReader{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -62,10 +68,39 @@ public class CreateListingFragment extends Fragment {
 //        }
 //    }
 
+    public EditText listing_title;
+    public EditText listing_price;
+    public EditText listing_category;
+    public EditText listing_location;
+    public EditText listing_description;
+    public EditText listing_contact;
+    public Button create_listing;
+    private ListingRepository listingRepository = new ListingRepository();
+    private Listing listing = new Listing();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_listing, container, false);
+        View root = inflater.inflate(R.layout.fragment_create_listing, container, false);
+
+        listing_title = root.findViewById(R.id.listing_title);
+        listing_price = root.findViewById(R.id.listing_price);
+        listing_category = root.findViewById(R.id.listing_category);
+        listing_location = root.findViewById(R.id.listing_location);
+        listing_description = root.findViewById(R.id.listing_description);
+        listing_contact = root.findViewById(R.id.listing_contact);
+
+        create_listing = root.findViewById(R.id.create_listing);
+
+        create_listing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNewListing(listing);
+            }
+        });
+
+
+        return root;
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +140,29 @@ public class CreateListingFragment extends Fragment {
 //    public interface OnFragmentInteractionListener {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
-//    }
+
+
+    public void onNewListing(Listing listing) {
+        listing.title  = listing_title.getText().toString();
+        listing.description = listing_description.getText().toString();
+        String price  = listing_price.getText().toString();
+        listing.price = Double.parseDouble(price);
+        listing.zipCode = listing_location.getText().toString();
+        listing.id = listing_category.getText().toString();
+
+        this.listingRepository.CreateListing(listing);
+
+    }
+
+    public void onListingModified(Listing listing) {
+        String test = "";
+    }
+
+    public void onListingRemoved(Listing listing) {
+        String test = "";
+    }
+
+    public void onListingMoved(Listing listing) {
+        String test = "";
+    }
 }

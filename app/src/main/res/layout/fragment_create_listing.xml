@@ -1,14 +1,73 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.group12.service_app.CreateListingFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/create_listing_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Create Listing" />
 
-</FrameLayout>
+
+    <EditText
+        android:id="@+id/listing_title"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_title"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/listing_price"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_price"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/listing_location"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_location"
+        android:inputType="textPostalAddress" />
+
+    <EditText
+        android:id="@+id/listing_category"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_category"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/listing_contact"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_contact_info"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/listing_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_description"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/create_listing"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:text="@string/create_listing" />
+
+</LinearLayout>
