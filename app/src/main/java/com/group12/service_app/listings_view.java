@@ -17,6 +17,12 @@ public class listings_view extends AppCompatActivity implements IListingReader {
         setContentView(R.layout.activity_listings_view);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.ListingRepository.GetAllListings(this);
+    }
+
     public void onNewListing(Listing listing) {
         String test = "";
 

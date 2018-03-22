@@ -12,6 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.group12.service_app.core.repositories.ListingRepository;
+import com.group12.service_app.core.repositories.interfaces.IListingReader;
+import com.group12.service_app.data.models.Listing;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -21,66 +28,60 @@ import android.widget.TextView;
 // * Use the {@link MyListingFragment#newInstance} factory method to
 // * create an instance of this fragment.
 // */
-public class MyListingFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    private OnFragmentInteractionListener mListener;
-//
+public class MyListingFragment extends Fragment implements IListingReader {
+
+    private ListingRepository listingRepository;
+    private ArrayList<Listing> listings = new ArrayList<Listing>();
 
     public MyListingFragment() {
         // Required empty public constructor
     }
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment MyListingFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static MyListingFragment newInstance(String param1, String param2) {
-//        MyListingFragment fragment = new MyListingFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_listing, container, false);
-
         Button moveToDetailsBtn = (Button) view.findViewById(R.id.moveToDetailsBtn);
+
         moveToDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent moveToDetails = new Intent(getActivity(), listing_details_view.class);
+                Random random = new Random();
+                Integer index = random.nextInt(listings.size());
+                Listing listing = listings.get(index);
+
+                moveToDetails.putExtra("listing", listing);
+
                 startActivity(moveToDetails);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.listingRepository = new ListingRepository();
+        this.listingRepository.GetAllListings(this);
+    }
+
+    public void onNewListing(Listing listing) {
+        this.listings.add(listing);
+    }
+
+    public void onListingModified(Listing listing) {
+
+    }
+
+    public void onListingRemoved(Listing listing) {
+
+    }
+
+    public void onListingMoved(Listing listing) {
+
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event

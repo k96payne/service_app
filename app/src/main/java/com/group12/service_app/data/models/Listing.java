@@ -2,6 +2,7 @@ package com.group12.service_app.data.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.Currency;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ import java.util.UUID;
  * Created by james on 3/3/18.
  */
 
-public class Listing {
+public class Listing implements Serializable {
 
     public Listing() { }
 

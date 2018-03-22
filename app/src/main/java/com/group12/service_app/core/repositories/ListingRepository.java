@@ -49,7 +49,7 @@ public class ListingRepository {
 
                         Listing listing = snapshot.getValue(Listing.class);
 
-                        listingReader.onListingModified(listing);
+                        listingReader.onNewListing(listing);
 
                     }
 
@@ -65,46 +65,5 @@ public class ListingRepository {
         this.listingsReference.addValueEventListener(this.listingEventListener);
 
     }
-
-    /*public void SetListingListenerDelegate(IListingReader listingReader) {
-        this.listingReaderDelegate = listingReader;
-        this.createListingListener();
-    }
-
-    private void createListingListener() {
-
-        //If we've already created our listener, return here. Only need to define it once.
-        if(this.listingListener != null) { return; }
-
-        //We have to make sure we can access 'this' from within the scope of the ChildEventListener.
-        //Define 'self' so we can do so since 'this' is relative to the scope inside of the ChildEventListener.
-        final ListingRepository self = this;
-
-        this.listingListener = this.listingsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(self.listingReaderDelegate != null) {
-
-                    Iterable<DataSnapshot> snapshots = dataSnapshot.getChildren();
-
-                    for (Iterator<DataSnapshot> i = snapshots.iterator(); i.hasNext();) {
-
-                        DataSnapshot snapshot = i.next();
-
-                        Listing listing = snapshot.getValue(Listing.class);
-
-                        self.listingReaderDelegate.onListingModified(listing);
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
-
-    }*/
 
 }
