@@ -7,7 +7,14 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.TextView;
+import android.app.Activity;
 
 import com.group12.service_app.core.repositories.*;
 import com.group12.service_app.core.repositories.interfaces.*;
@@ -36,6 +43,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
 //    private OnFragmentInteractionListener mListener;
 
+
+
     public ListingRepository ListingRepository = new ListingRepository();
 
     public SearchListingFragment() {
@@ -46,8 +55,38 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     public void onStart() {
         super.onStart();
 
-        this.ListingRepository.GetAllListings(this);
+        Spinner SortingSpinner = getView().findViewById(R.id.SortingSpinnerId);
+
+        ArrayAdapter<CharSequence>sortingType_ArrayAdapter =  ArrayAdapter.createFromResource(getActivity(), R.array.sorting_categories,android.R.layout.simple_spinner_dropdown_item);
+
+        sortingType_ArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SortingSpinner.setAdapter(sortingType_ArrayAdapter);
+        //SortingSpinner.setOnItemSelectedListener(this);
+
+
+
+        String[] Listings = {"Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
+                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
+                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};
+
+
+        ListAdapter ad = new CustomAdapter(getActivity(),Listings);
+
+        ListView Listings_ListView = (ListView) getView().findViewById(R.id.myListView);
+        Listings_ListView.setAdapter(ad);
+        Listings_ListView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        String listing = String.valueOf(adapterView.getItemAtPosition(i));
+                        Toast.makeText(getActivity(),listing, Toast.LENGTH_LONG).show();
+
+                    }
+                }
+        );
     }
+
 
     public void onNewListing(Listing listing) {
         printListing(listing);
@@ -105,6 +144,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_listing, container, false);
     }
+
+
 
 //    // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
