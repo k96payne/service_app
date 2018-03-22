@@ -70,7 +70,7 @@
     <TextView
         android:id="@+id/payoffAmountLabel"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="@string/payoffAmount"
@@ -80,14 +80,15 @@
 
     <TextView
         android:id="@+id/payoffPriceLabel"
-        android:layout_width="209dp"
-        android:layout_height="0dp"
+        android:layout_width="165dp"
+        android:layout_height="21dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/payoffPrice"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toEndOf="@+id/payoffAmountLabel"
         app:layout_constraintTop_toBottomOf="@+id/ListerProfileImage" />
 
@@ -117,13 +118,10 @@
         android:id="@+id/listingTimeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="38dp"
         android:layout_marginTop="16dp"
         android:text="@string/listingTime"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toEndOf="@+id/dueDateLabel"
         app:layout_constraintTop_toBottomOf="@+id/payoffAmountLabel" />
 
@@ -132,7 +130,7 @@
         android:layout_width="158dp"
         android:layout_height="20dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/dueTime"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -153,14 +151,12 @@
 
     <TextView
         android:id="@+id/dueAddressLabel"
-        android:layout_width="318dp"
-        android:layout_height="39dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/dueAddress"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listingAddressLabel" />
 
