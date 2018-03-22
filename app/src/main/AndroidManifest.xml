@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".signup_view" />
         <activity android:name=".listings_view" />
-        <activity android:name=".listing_details_view"></activity>
+        <activity android:name=".CustomAdapter"></activity>
     </application>
 
 </manifest>
