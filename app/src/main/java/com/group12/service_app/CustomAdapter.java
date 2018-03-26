@@ -11,8 +11,12 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 class CustomAdapter  extends ArrayAdapter<String> {
-    CustomAdapter(@NonNull Context context, String[] Listings) {
+//    CustomAdapter(@NonNull Context context, String[] Listings) {
+    // Added By Kyle
+    CustomAdapter(@NonNull Context context, ArrayList<String> Listings) {
         super(context, R.layout.custom_row, Listings);
 
 

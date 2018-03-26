@@ -16,10 +16,16 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.app.Activity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.group12.service_app.core.repositories.*;
 import com.group12.service_app.core.repositories.interfaces.*;
 import com.group12.service_app.data.models.Listing;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -65,9 +71,33 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
 
 
-        String[] Listings = {"Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
-                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
-                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};
+//        String[] Listings = {"Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
+//                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
+//                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};final ArrayList<String> list = new ArrayList<>();
+
+        // Added by Kyle
+        final ArrayList<String> Listings = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("listings");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Listing listing = postSnapshot.getValue(Listing.class);
+                        Listings.add(listing.title);
+                        System.out.println(listing.title);
+                    }
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // handle
+            }
+        });
 
 
         ListAdapter ad = new CustomAdapter(getActivity(),Listings);
