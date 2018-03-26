@@ -98,7 +98,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                 // handle
             }
         });
-
+        // End Added by Kyle
 
         ListAdapter ad = new CustomAdapter(getActivity(),Listings);
 
