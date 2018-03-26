@@ -76,7 +76,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};final ArrayList<String> list = new ArrayList<>();
 
         // Added by Kyle
-        final ArrayList<String> Listings = new ArrayList<>();
+        final ArrayList<Listing> Listings = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("listings");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -85,7 +85,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                 try {
                     for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Listing listing = postSnapshot.getValue(Listing.class);
-                        Listings.add(listing.title);
+                        Listings.add(listing);
                         System.out.println(listing.title);
                     }
                 }

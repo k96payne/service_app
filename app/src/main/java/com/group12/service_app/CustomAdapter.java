@@ -11,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.group12.service_app.data.models.Listing;
+
 import java.util.ArrayList;
 
-class CustomAdapter  extends ArrayAdapter<String> {
+class CustomAdapter  extends ArrayAdapter<Listing> {
 //    CustomAdapter(@NonNull Context context, String[] Listings) {
     // Added By Kyle
-    CustomAdapter(@NonNull Context context, ArrayList<String> Listings) {
+    CustomAdapter(@NonNull Context context, ArrayList<Listing> Listings) {
         super(context, R.layout.custom_row, Listings);
 
 
@@ -30,11 +32,23 @@ class CustomAdapter  extends ArrayAdapter<String> {
 
         LayoutInflater ListingInflater = LayoutInflater.from(getContext());
         View CustomView = ListingInflater.inflate(R.layout.custom_row,parent,false);
-        String singleListing = getItem(position);
-        TextView  ListingText = (TextView) CustomView.findViewById(R.id.ListingTitle);
-        //ImageView  ListingImage = (ImageView) CustomView.findViewById(R.id.ListingImage);
-        ListingText.setText(singleListing);
-        // ListingImage.setImageResource(R.mipmap.brokencar);
+        Listing singleListing = getItem(position);
+
+        TextView ListingTitle = (TextView) CustomView.findViewById(R.id.ListingTitle);
+        ListingTitle.setText(singleListing.title);
+
+        TextView ListingDescription = (TextView) CustomView.findViewById(R.id.ListingDescription);
+        ListingDescription.setText(singleListing.description);
+
+        TextView ListingZip = (TextView) CustomView.findViewById(R.id.ListingZip);
+        ListingZip.setText(singleListing.zipCode);
+
+
+//        TextView ListingPrice = (TextView) CustomView.findViewById(R.id.ListingPrice;
+//        ListingPrice.setText((String)singleListing.price);
+
+
+
 
         return CustomView;
     }
