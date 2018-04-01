@@ -28,3 +28,6 @@ public class Listing implements Serializable {
     public Double price;
 
 }
+
+
+
