@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:clickable="true">
 
 <!--
     <TextView
@@ -41,7 +42,8 @@
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:clickable="false"/>
 
 
         <TextView
@@ -59,7 +61,8 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:clickable="false"/>
 
 
         <RatingBar
@@ -90,7 +93,8 @@
             android:textColor="@android:color/black"
             android:textSize="10sp"
             android:textStyle="italic"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:clickable="false"/>
 
 
         <Button
@@ -102,7 +106,8 @@
             android:layout_row="4"
             android:text="Respond"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:clickable = "false"/>
 
         <TextView
             android:id="@+id/ListingPrice"
@@ -117,7 +122,8 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:clickable = "false"/>
 
         <TextView
             android:id="@+id/ListingZip"
@@ -132,7 +138,8 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:typeface="monospace" />
+            android:typeface="monospace"
+            android:clickable = "false"/>
 
 
     </GridLayout>
