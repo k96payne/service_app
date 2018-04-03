@@ -33,12 +33,14 @@ class CustomAdapter  extends ArrayAdapter<Listing> {
 
         LayoutInflater ListingInflater = LayoutInflater.from(getContext());
         View CustomView = ListingInflater.inflate(R.layout.custom_row,parent,false);
-        Listing singleListing = getItem(position);
+        final Listing singleListing = getItem(position);
         //logic to move to details view for linearlayout
         CustomView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mcon.startActivity(new Intent(mcon, listing_details_view.class));
+                Intent intent = new Intent (mcon, listing_details_view.class);
+                intent.putExtra("listing", singleListing);
+                mcon.startActivity(intent);
             }
         });
         //end of logic
