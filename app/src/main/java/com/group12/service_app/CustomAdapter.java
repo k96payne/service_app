@@ -1,6 +1,7 @@
 package com.group12.service_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,12 +17,12 @@ import com.group12.service_app.data.models.Listing;
 import java.util.ArrayList;
 
 class CustomAdapter  extends ArrayAdapter<Listing> {
+    private Context mcon;
 //    CustomAdapter(@NonNull Context context, String[] Listings) {
     // Added By Kyle
     CustomAdapter(@NonNull Context context, ArrayList<Listing> Listings) {
         super(context, R.layout.custom_row, Listings);
-
-
+        mcon = context;
 
 
     }
@@ -33,6 +34,14 @@ class CustomAdapter  extends ArrayAdapter<Listing> {
         LayoutInflater ListingInflater = LayoutInflater.from(getContext());
         View CustomView = ListingInflater.inflate(R.layout.custom_row,parent,false);
         Listing singleListing = getItem(position);
+        //logic to move to details view for linearlayout
+        CustomView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mcon.startActivity(new Intent(mcon, listing_details_view.class));
+            }
+        });
+        //end of logic
 
         TextView ListingTitle = (TextView) CustomView.findViewById(R.id.ListingTitle);
         ListingTitle.setText(singleListing.title);
