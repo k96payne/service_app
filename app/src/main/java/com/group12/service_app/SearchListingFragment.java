@@ -136,6 +136,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //                }
 //        );
 
+        // comment
 
         mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
        search_text = (SearchView) getView().findViewById(R.id.search_text);
