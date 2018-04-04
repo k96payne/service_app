@@ -18,6 +18,8 @@ import com.group12.service_app.core.repositories.ListingRepository;
 import com.group12.service_app.core.repositories.interfaces.IListingReader;
 import com.group12.service_app.data.models.Listing;
 
+import java.util.UUID;
+
 ///**
 // * A simple {@link Fragment} subclass.
 // * Activities that contain this fragment must implement the
@@ -90,7 +92,7 @@ public class CreateListingFragment extends Fragment {
         listing.description = listing_description.getText().toString();
         listing.price = Double.parseDouble(price);
         listing.zipCode = listing_location.getText().toString();
-        listing.id = listing_category.getText().toString();
+        listing.id = UUID.randomUUID().toString();
 
         return listing;
     }

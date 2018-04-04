@@ -30,6 +30,34 @@ public class ListingRepository {
         this.listingsReference.push().setValue(listing);
     }
 
+    public void DeleteListing(Listing listing) {
+
+        this.listingsReference.orderByChild("id").equalTo(listing.id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                for (Iterator<DataSnapshot> i = dataSnapshot.getChildren().iterator(); i.hasNext();) {
+
+                    i.next().getRef().removeValue();
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
+    }
+
     public void GetAllListings(final IListingReader listingReader) {
 
         //If they give us a null listing reader, escape.
