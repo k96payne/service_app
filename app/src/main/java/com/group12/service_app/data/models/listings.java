@@ -7,12 +7,25 @@ package com.group12.service_app.data.models;
 public class listings {
 
     public String description, id, title;
+    public double price;
+    public String zipCode;
     public listings(){}
 
-    public listings(String description, String id, String title) {
+    public listings(String description, String id, String title,String zipCode, double price) {
         this.description = description;
         this.id = id;
         this.title = title;
+        this.price = price;
+        this.zipCode = zipCode;
+
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public String getDescription() {
@@ -38,4 +51,14 @@ public class listings {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
+    public  void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }

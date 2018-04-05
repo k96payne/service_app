@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragment = new SearchListingFragment();
+        Log.d("listing search", "onNavigationItemSelected: listing search");
+
+
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         //BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
 
@@ -34,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getFragmentManager();
 
-
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.bottomBar, fragment).commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

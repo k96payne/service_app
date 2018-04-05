@@ -68,7 +68,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //    private OnFragmentInteractionListener mListener;
 
    private SearchView search_text;
-   private Button mSearchButton;
+  // private Button mSearchButton;
    private  RecyclerView Listings_result;
    private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
@@ -143,20 +143,40 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
         Listings_result = (RecyclerView) getView().findViewById(R.id.Listings_result);
 
-        mSearchButton = (Button) getView().findViewById(R.id.mSearchButton);
+       // mSearchButton = (Button) getView().findViewById(R.id.mSearchButton);
 
         Listings_result.setHasFixedSize(true);
         Listings_result.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
+
+        search_text.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
                 String input_text = search_text.getQuery().toString();
                 firebaseListingSearch(input_text);
-
+                return true;
             }
+
+
         });
+
+//        mSearchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                String input_text = search_text.getQuery().toString();
+//                firebaseListingSearch(input_text);
+//
+//            }
+//        }
+
+        //);
 
     }
 
@@ -174,12 +194,12 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             @Override
             protected void populateViewHolder(listingsViewHolder viewHolder, listings list, int position) {
 
-                viewHolder.setListings(list.id, list.description, list.title);
-                System.out.println("test");
-                System.out.println(list.title);
+                viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
+                //System.out.println("test");
+               // System.out.println(list.title);
             }
         };
-        System.out.println("test");
+        //System.out.println("test");
 
         Listings_result.setAdapter(firebaseRecyclerAdapter);
 
@@ -193,16 +213,20 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             myView = itemView;
         }
 
-        public  void setListings(String ListingProviderName, String ListingDescription, String ListingTitle){
+        public  void setListings(String ListingProviderName, String ListingDescription, String ListingTitle, double ListingPrice, String ListingZipCode){
 
             TextView Listing_provider_name = (TextView) myView.findViewById(R.id.ProviderName);
             TextView listing_descirption = (TextView) myView.findViewById(R.id.ListingDescription);
             TextView Listing_Title = (TextView) myView.findViewById(R.id.ListingTitle);
             TextView Listing_Price = (TextView) myView.findViewById(R.id.ListingPrice);
+            TextView Listing_zipCode = (TextView) myView.findViewById(R.id.ListingZip);
 
             Listing_provider_name.setText(ListingProviderName);
             listing_descirption.setText(ListingDescription);
             Listing_Title.setText(ListingTitle);
+            Listing_Price.setText("$ " + String.format ("%.0f", ListingPrice));
+           // Listing_Price.setText(String.valueOf(ListingPrice));
+            Listing_zipCode.setText(ListingZipCode);
           //  Listing_Price.setText(ListingPrice);
 
          //   Glide.with(getApplicationContext()).load()

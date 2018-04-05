@@ -172,11 +172,14 @@
             android:layout_column="0"
             android:layout_marginVertical="40dp"
             android:layout_row="2"
+            android:background="@color/colorPrimary"
             android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
 
         <SearchView
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:id="@+id/search_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -184,14 +187,6 @@
             android:layout_row="0">
 
         </SearchView>
-
-        <Button
-            android:id="@+id/mSearchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:text="Button" />
 
 
     </GridLayout>
