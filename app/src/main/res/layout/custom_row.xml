@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:clickable="true">
+    android:clickable="true"
+    android:elevation="10dp"
+    android:orientation="horizontal">
 
     <!--
     <TextView
@@ -20,16 +21,18 @@
 
 -->
 
+
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="20dp"
 
+
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="20dp"
-        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:background="@drawable/container_dropshadow"
         android:columnCount="3"
         android:orientation="vertical"
         android:paddingRight="5dp"
@@ -97,12 +100,13 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_column="2"
             android:layout_margin="2dp"
             android:layout_row="4"
             android:clickable="false"
+            android:padding="5dp"
             android:text="Go >>"
             android:textSize="12sp"
             android:textStyle="bold" />
