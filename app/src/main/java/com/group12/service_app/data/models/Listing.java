@@ -28,6 +28,7 @@ public class Listing implements Serializable {
     public String description;
     public String zipCode;
     public Double price;
+    public String ownerId;
 
 }
 
