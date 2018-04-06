@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.group12.service_app.core.repositories.ListingRepository;
+import com.group12.service_app.core.repositories.UserRepository;
 import com.group12.service_app.core.repositories.interfaces.IListingReader;
 import com.group12.service_app.data.models.Listing;
 
@@ -42,6 +44,7 @@ public class CreateListingFragment extends Fragment {
     public EditText listing_contact;
     public Button create_listing;
     private ListingRepository listingRepository;
+    private UserRepository userRepository = new UserRepository();
 
     @Override
     public void onStart() {
@@ -86,6 +89,7 @@ public class CreateListingFragment extends Fragment {
 
     private Listing GetNewListing() {
         Listing listing = new Listing();
+        FirebaseUser currentUser = this.userRepository.GetCurrentUser();
         String price  = listing_price.getText().toString();
 
         listing.title  = listing_title.getText().toString();
@@ -93,6 +97,7 @@ public class CreateListingFragment extends Fragment {
         listing.price = Double.parseDouble(price);
         listing.zipCode = listing_location.getText().toString();
         listing.id = UUID.randomUUID().toString();
+        listing.ownerId = currentUser.getUid();
 
         return listing;
     }
