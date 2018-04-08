@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     @Override
     public void onStart() {
         super.onStart();
-
+        Log.e("On start", "search listings accessed");
        // Spinner SortingSpinner = getView().findViewById(R.id.SortingSpinnerId);
 
        // ArrayAdapter<CharSequence>sortingType_ArrayAdapter =  ArrayAdapter.createFromResource(getActivity(), R.array.sorting_categories,android.R.layout.simple_spinner_dropdown_item);
@@ -159,6 +160,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             @Override
             public boolean onQueryTextChange(String newText) {
                 String input_text = search_text.getQuery().toString();
+                Log.e("Search query:", input_text);
                 firebaseListingSearch(input_text);
                 return true;
             }
@@ -166,6 +168,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
         });
 
+
+        firebaseListingSearch("");
 //        mSearchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -181,19 +185,18 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     }
 
     private void firebaseListingSearch(String input_text){
-        Toast.makeText(getActivity(),"Started Search", Toast.LENGTH_LONG).show();
+        if(input_text != null){
+            Toast.makeText(getActivity(),"Started Search", Toast.LENGTH_LONG).show();
+        }
+
 
         Query firebaseSearchQuery  = mListingDatabase.orderByChild("title").startAt(input_text).endAt(input_text + "\uf8ff");
 
-        FirebaseRecyclerAdapter< listings, listingsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<listings, listingsViewHolder>(
-
-        listings.class, R.layout.custom_row, listingsViewHolder.class , firebaseSearchQuery
-
-
-        ) {
+        FirebaseRecyclerAdapter< listings, listingsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<listings, listingsViewHolder>(listings.class, R.layout.custom_row, listingsViewHolder.class , firebaseSearchQuery) {
             @Override
             protected void populateViewHolder(listingsViewHolder viewHolder, listings list, int position) {
 
+                Log.e("Listing", list.title);
                 viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
                 //System.out.println("test");
                // System.out.println(list.title);
@@ -201,9 +204,10 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         };
         //System.out.println("test");
 
+
         Listings_result.setAdapter(firebaseRecyclerAdapter);
 
-
+        Log.e("RecyclerView", "Adapter attached");
     }
 
     public  static class  listingsViewHolder extends RecyclerView.ViewHolder {
@@ -291,6 +295,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
+        Log.e("OnCreateView", "onCreateView: SearchListingFragment");
         return inflater.inflate(R.layout.fragment_search_listing, container, false);
     }
 
