@@ -2,6 +2,7 @@ package com.group12.service_app.core.repositories;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +55,39 @@ public class ListingRepository {
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
+        });
+
+    }
+
+    public void GetListingsForUser(final IListingReader listingReader, FirebaseUser user) {
+
+        //If they give us a null listing reader or user, escape.
+        if(listingReader == null || user == null) { return; }
+
+        this.listingsReference.orderByChild("ownerId").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 if(listingReader != null) {
+
+                    Iterable<DataSnapshot> snapshots = dataSnapshot.getChildren();
+
+                    for (Iterator<DataSnapshot> i = snapshots.iterator(); i.hasNext();) {
+
+                        DataSnapshot snapshot = i.next();
+
+                        Listing listing = snapshot.getValue(Listing.class);
+
+                        listingReader.onNewListing(listing);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
 
     }
