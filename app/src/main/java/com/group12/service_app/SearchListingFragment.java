@@ -1,6 +1,7 @@
 package com.group12.service_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -192,9 +193,20 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
         ) {
             @Override
-            protected void populateViewHolder(listingsViewHolder viewHolder, listings list, int position) {
+            protected void populateViewHolder(final listingsViewHolder viewHolder, final listings list, final int position) {
 
                 viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
+                viewHolder.goButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent moveToDetails = new Intent(getActivity(), listing_details_view.class);
+                        moveToDetails.putExtra("title", list.getTitle());
+                        moveToDetails.putExtra("description", list.getDescription());
+                        moveToDetails.putExtra("price", list.getPrice());
+                        moveToDetails.putExtra("address", list.getZipCode());
+                        startActivity(moveToDetails);
+                    }
+                });
                 //System.out.println("test");
                // System.out.println(list.title);
             }
@@ -208,9 +220,12 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
     public  static class  listingsViewHolder extends RecyclerView.ViewHolder {
         View myView;
+        Button goButton;
         public listingsViewHolder(View itemView) {
             super(itemView);
             myView = itemView;
+            goButton = (Button) itemView.findViewById(R.id.button3);
+
         }
 
         public  void setListings(String ListingProviderName, String ListingDescription, String ListingTitle, double ListingPrice, String ListingZipCode){
