@@ -32,9 +32,21 @@ public class listing_details_view extends AppCompatActivity {
         this.descriptionTextView = (TextView) findViewById(R.id.dueDescriptionLabel);
 
         Listing listing = (Listing)getIntent().getSerializableExtra("listing");
+        String title = getIntent().getStringExtra("title");
+        String description = getIntent().getStringExtra("description");
+        String zipCode = getIntent().getStringExtra("address");
+        Double price = getIntent().getDoubleExtra("price", 0);
+
 
         if(listing != null) {
             this.LoadListinDetails(listing);
+        }
+        else
+        {
+            this.listingTitleTextView.setText(title);
+            this.priceTextView.setText("$" + price);
+            this.addressTextView.setText(zipCode);
+            this.descriptionTextView.setText(description);
         }
     }
 
