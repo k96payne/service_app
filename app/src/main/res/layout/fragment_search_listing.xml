@@ -178,13 +178,13 @@
         </android.support.v7.widget.RecyclerView>
 
         <SearchView
-            android:imeOptions="actionSearch"
-            android:inputType="text"
             android:id="@+id/search_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_column="0"
-            android:layout_row="0">
+            android:layout_row="0"
+            android:imeOptions="actionSearch"
+            android:inputType="text">
 
         </SearchView>
 

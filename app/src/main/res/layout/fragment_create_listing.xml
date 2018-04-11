@@ -67,7 +67,11 @@
         android:id="@+id/create_listing"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_margin="5dp"
         android:layout_weight="1"
-        android:text="@string/create_listing" />
+        android:background="@drawable/button_main_style"
+        android:padding="10dp"
+        android:text="@string/create_listing"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
