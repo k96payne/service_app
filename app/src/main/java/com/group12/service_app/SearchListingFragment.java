@@ -69,10 +69,10 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
 //    private OnFragmentInteractionListener mListener;
 
-   private SearchView search_text;
-  // private Button mSearchButton;
-   private  RecyclerView Listings_result;
-   private DatabaseReference mListingDatabase ;
+    private SearchView search_text;
+    // private Button mSearchButton;
+    private  RecyclerView Listings_result;
+    private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
 
     public SearchListingFragment() {
@@ -83,12 +83,12 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     public void onStart() {
         super.onStart();
         Log.e("On start", "search listings accessed");
-       // Spinner SortingSpinner = getView().findViewById(R.id.SortingSpinnerId);
+        // Spinner SortingSpinner = getView().findViewById(R.id.SortingSpinnerId);
 
-       // ArrayAdapter<CharSequence>sortingType_ArrayAdapter =  ArrayAdapter.createFromResource(getActivity(), R.array.sorting_categories,android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<CharSequence>sortingType_ArrayAdapter =  ArrayAdapter.createFromResource(getActivity(), R.array.sorting_categories,android.R.layout.simple_spinner_dropdown_item);
 
-       // sortingType_ArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-       // SortingSpinner.setAdapter(sortingType_ArrayAdapter);
+        // sortingType_ArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // SortingSpinner.setAdapter(sortingType_ArrayAdapter);
         //SortingSpinner.setOnItemSelectedListener(this);
 
 
@@ -97,7 +97,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
 //                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};final ArrayList<String> list = new ArrayList<>();
 
-    //     Added by Kyle
+        //     Added by Kyle
         final ArrayList<Listing> Listings = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("listings");
 
@@ -108,7 +108,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                     for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Listing listing = postSnapshot.getValue(Listing.class);
                         //Listings.add(listing);
-                       // System.out.println(listing.title);
+                        // System.out.println(listing.title);
                     }
                 }
                 catch(Exception e) {
@@ -141,11 +141,11 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         // comment
 
         mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
-       search_text = (SearchView) getView().findViewById(R.id.search_text);
+        search_text = (SearchView) getView().findViewById(R.id.search_text);
 
         Listings_result = (RecyclerView) getView().findViewById(R.id.Listings_result);
 
-       // mSearchButton = (Button) getView().findViewById(R.id.mSearchButton);
+        // mSearchButton = (Button) getView().findViewById(R.id.mSearchButton);
 
         Listings_result.setHasFixedSize(true);
         Listings_result.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -211,7 +211,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                     }
                 });
                 //System.out.println("test");
-               // System.out.println(list.title);
+                // System.out.println(list.title);
             }
         };
         //System.out.println("test");
@@ -244,11 +244,11 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             listing_descirption.setText(ListingDescription);
             Listing_Title.setText(ListingTitle);
             Listing_Price.setText("$ " + String.format ("%.0f", ListingPrice));
-           // Listing_Price.setText(String.valueOf(ListingPrice));
+            // Listing_Price.setText(String.valueOf(ListingPrice));
             Listing_zipCode.setText(ListingZipCode);
-          //  Listing_Price.setText(ListingPrice);
+            //  Listing_Price.setText(ListingPrice);
 
-         //   Glide.with(getApplicationContext()).load()
+            //   Glide.with(getApplicationContext()).load()
 
         }
     }

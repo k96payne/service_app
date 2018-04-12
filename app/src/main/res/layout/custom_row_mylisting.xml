@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:elevation="10dp"
+    android:orientation="horizontal">
+
+    <!--
+    <TextView
+        android:id="@+id/ListingText"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+        android:text="TextView" />
+
+-->
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="20dp"
+
+
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/container_dropshadow"
+        android:columnCount="3"
+        android:orientation="vertical"
+        android:paddingRight="5dp"
+        android:rowCount="6">
+
+        <TextView
+            android:id="@+id/My_ListingTitle"
+            android:layout_width="250dp"
+
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_margin="5dp"
+            android:layout_row="0"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:text="ListingTitle"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+
+
+
+
+        <TextView
+            android:id="@+id/My_ListingDescription"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_margin="5dp"
+            android:layout_row="3"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Listing Discription Listing Discription Listing Discription  Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription  sting Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:typeface="monospace" />
+
+
+        <Button
+        android:id="@+id/My_button3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_column="2"
+        android:layout_margin="2dp"
+        android:layout_row="5"
+        android:padding="5dp"
+        android:text="Go >>"
+        android:clickable="true"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+
+
+        <Button
+            android:id="@+id/My_deleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_margin="2dp"
+            android:layout_row="5"
+            android:padding="5dp"
+            android:text="Delete"
+            android:clickable="true"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/My_ListingPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_margin="5dp"
+            android:layout_row="4"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:text="ListingPrice"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/My_ListingZip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_margin="5dp"
+            android:layout_row="1"
+            android:layout_weight="1"
+            android:fontFamily="Serif"
+            android:text="ListingZip"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+
+    </GridLayout>
+
+    <!--
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+
+        <ImageView
+            android:id="@+id/ListingImage"
+            android:layout_width="80dp"
+            android:layout_height="65dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="true"
+            app:layout_column="2"
+            app:layout_row="0"
+            app:layout_rowSpan="2"
+
+            app:srcCompat="@mipmap/brokencar" /><![CDATA[/>
+
+        ]]>
+        -->
+
+
+</LinearLayout>
