@@ -207,6 +207,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                         moveToDetails.putExtra("description", list.getDescription());
                         moveToDetails.putExtra("price", list.getPrice());
                         moveToDetails.putExtra("address", list.getZipCode());
+                        moveToDetails.putExtra("listingID", list.getId());
                         startActivity(moveToDetails);
                     }
                 });
