@@ -40,7 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.group12.service_app.core.repositories.*;
 import com.group12.service_app.core.repositories.interfaces.*;
+import com.group12.service_app.data.models.Conversation;
 import com.group12.service_app.data.models.Listing;
+import com.group12.service_app.data.models.Message;
 import com.group12.service_app.data.models.listings;
 //import com.group12.service_app.data.models.firebasesearch;
 
