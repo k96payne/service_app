@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,6 +63,20 @@
         android:ems="10"
         android:hint="@string/listing_description"
         android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/select_image_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/selectImage" />
+
+    <ImageView
+        android:id="@+id/listing_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_weight="1"
+        android:src="@android:drawable/ic_menu_camera" />
 
     <Button
         android:id="@+id/create_listing"
