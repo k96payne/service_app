@@ -41,9 +41,9 @@ public class ListingRepository {
         this.listingsReference.push().setValue(listing);
     }
 
-    public void DeleteListing(Listing listing) {
+    public void DeleteListing(String listingId) {
 
-        this.listingsReference.orderByChild("id").equalTo(listing.id).addChildEventListener(new ChildEventListener() {
+        this.listingsReference.orderByChild("id").equalTo(listingId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -67,6 +67,12 @@ public class ListingRepository {
             public void onCancelled(DatabaseError databaseError) { }
         });
 
+    }
+
+    public void DeleteListing(Listing listing) {
+        if(listing != null) {
+            DeleteListing(listing.id);
+        }
     }
 
     public void GetListingsForUser(final IListingReader listingReader, FirebaseUser user) {

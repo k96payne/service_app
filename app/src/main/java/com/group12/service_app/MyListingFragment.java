@@ -126,7 +126,7 @@ public class MyListingFragment extends Fragment implements IListingReader {
 
                 Log.e("Listing", list.title);
                 viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
-                viewHolder.goButton.setOnClickListener(new View.OnClickListener() {
+                viewHolder.myView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent moveToDetails = new Intent(getActivity(), listing_details_view.class);
@@ -134,6 +134,7 @@ public class MyListingFragment extends Fragment implements IListingReader {
                         moveToDetails.putExtra("description", list.getDescription());
                         moveToDetails.putExtra("price", list.getPrice());
                         moveToDetails.putExtra("address", list.getZipCode());
+                        moveToDetails.putExtra("id", list.getId());
                         startActivity(moveToDetails);
                     }
                 });
@@ -143,25 +144,9 @@ public class MyListingFragment extends Fragment implements IListingReader {
                     @Override
                     public void onClick(View view) {
 
-                        String id = list.getId();
-                        Query toDelete  = mListingDatabase.orderByChild("id").equalTo(id);
+                        ListingRepository.DeleteListing(list.getId());
 
-
-                        toDelete.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ListingSnapshot: dataSnapshot.getChildren()) {
-                                    ListingSnapshot.getRef().removeValue();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                       // Toast.makeText(getActivity(),id, Toast.LENGTH_LONG).show();
+                       Toast.makeText(getActivity(), "Listing Successfully Deleted", Toast.LENGTH_LONG).show();
 
                         firebaseListingSearch();
 
@@ -186,7 +171,6 @@ public class MyListingFragment extends Fragment implements IListingReader {
         public listingsViewHolder(View itemView) {
             super(itemView);
             myView = itemView;
-            goButton = (Button) itemView.findViewById(R.id.My_button3);
             deleteButton = (Button) itemView.findViewById(R.id.My_deleteButton);
 
         }

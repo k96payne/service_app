@@ -114,6 +114,7 @@ public class CreateListingFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), listing_details_view.class);
                 intent.putExtra("listing", listing);
+                intent.putExtra("id", listing.id);
 
                 getActivity().startActivity(intent);
 
