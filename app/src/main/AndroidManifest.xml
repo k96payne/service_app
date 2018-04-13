@@ -20,6 +20,10 @@
         <activity android:name=".signup_view" />
         <activity android:name=".listings_view" />
         <activity android:name=".listing_details_view" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
