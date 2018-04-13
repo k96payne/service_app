@@ -119,6 +119,7 @@ public class MyListingFragment extends Fragment implements IListingReader {
 
         Query firebaseSearchQuery  = mListingDatabase.orderByChild("ownerId").equalTo(user.getUid().toString());
 
+
         FirebaseRecyclerAdapter< listings, listingsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<listings, listingsViewHolder>(listings.class, R.layout.custom_row_mylisting, listingsViewHolder.class , firebaseSearchQuery) {
             @Override
             protected void populateViewHolder(final listingsViewHolder viewHolder, final listings list, final int position) {

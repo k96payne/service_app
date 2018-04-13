@@ -22,12 +22,12 @@
 
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+
+
         android:layout_marginBottom="20dp"
-
-
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="20dp"
@@ -37,16 +37,28 @@
         android:paddingRight="5dp"
         android:rowCount="5">
 
+        <Button
+            android:id="@+id/my_button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_margin="2dp"
+            android:layout_row="4"
+            android:padding="5dp"
+            android:text="Dummy"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/ListingTitle"
             android:layout_width="250dp"
+
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_columnSpan="2"
+            android:layout_columnSpan="3"
             android:layout_margin="5dp"
             android:layout_row="0"
             android:layout_weight="1"
-            android:fontFamily="@font/raleway_bold"
+            android:fontFamily="serif"
             android:text="ListingTitle"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -56,16 +68,17 @@
 
         <TextView
             android:id="@+id/ProviderName"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
 
             android:layout_height="wrap_content"
 
             android:layout_column="0"
-            android:layout_columnSpan="2"
+            android:layout_columnSpan="3"
             android:layout_margin="5dp"
             android:layout_row="1"
             android:layout_weight="1"
-            android:fontFamily="@font/raleway_light"
+            android:fontFamily="serif"
+            android:singleLine="false"
             android:text="ProviderName"
             android:textColor="@android:color/black"
             android:textSize="14sp"
@@ -75,7 +88,7 @@
 
         <TextView
             android:id="@+id/ListingDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
 
             android:layout_height="wrap_content"
 
@@ -84,41 +97,41 @@
             android:layout_margin="5dp"
             android:layout_row="3"
             android:layout_weight="1"
-            android:fontFamily="@font/lusitana"
+            android:fontFamily="sans-serif-condensed"
+            android:singleLine="false"
             android:text="Listing Discription Listing Discription Listing Discription  Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription  sting Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription Listing Discription"
             android:textAlignment="viewStart"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="10sp"
+            android:textStyle="italic"
             android:typeface="monospace" />
 
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_column="2"
             android:layout_margin="2dp"
             android:layout_row="4"
             android:clickable="true"
-            android:background="@drawable/button_main_style"
-            android:textColor="#FFFFFF"
             android:padding="5dp"
-            android:text="DETAILS"
+            android:text="Go >>"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/ListingPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_margin="5dp"
             android:layout_row="4"
             android:layout_weight="1"
-            android:fontFamily="@font/raleway_bold"
+            android:fontFamily="serif"
             android:text="ListingPrice"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:typeface="monospace" />
 
@@ -130,7 +143,7 @@
             android:layout_margin="5dp"
             android:layout_row="1"
             android:layout_weight="1"
-            android:fontFamily="@font/raleway_light"
+            android:fontFamily="Serif"
             android:text="ListingZip"
             android:textColor="@android:color/black"
             android:textSize="14sp"
