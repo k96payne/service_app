@@ -6,17 +6,18 @@ package com.group12.service_app.data.models;
 
 public class listings {
 
-    public String description, id, title;
+    public String description, id, title, ownerId;
     public double price;
     public String zipCode;
     public listings(){}
 
-    public listings(String description, String id, String title,String zipCode, double price) {
+    public listings(String description, String id, String title,String zipCode, double price, String ownerId) {
         this.description = description;
         this.id = id;
         this.title = title;
         this.price = price;
         this.zipCode = zipCode;
+        this.ownerId = ownerId;
 
     }
 
@@ -60,5 +61,7 @@ public class listings {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public String getOwnerId() {return ownerId;}
 
 }
