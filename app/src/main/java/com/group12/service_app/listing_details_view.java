@@ -59,7 +59,7 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         String zipCode = getIntent().getStringExtra("address");
         Double price = getIntent().getDoubleExtra("price", 0);
         final String listingID = getIntent().getStringExtra("lisitngID");
-
+        String listingOwnerID = getIntent().getStringExtra("listingOwnerId");
         String id = getIntent().getStringExtra("id");
 
         if(listing != null) {
@@ -75,26 +75,14 @@ public class listing_details_view extends AppCompatActivity implements IListingI
             this.listingRepository.GetListingImage(id, this);
         }
 
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference listingsReference = database.getReference("listings");
-        //final Query usersListings = listingsReference.orderByChild("ownerId").equalTo(user.getUid());
-        final Query listingsMatchingId = listingsReference.orderByChild("id").equalTo(listingID);
-        listingsMatchingId.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
-            }
-        });
-
-
+        String userID = user.getUid();
+        Log.d("PRINT_LISTING_OWNERID", "listing Owner ID: " + listingOwnerID);
+        Log.d("PRINT_USERID", "User ID: " + userID);
+        if(listingOwnerID.equals(userID)){
+            listingResponseButton.setText("Delete");
+        }
     }
 
     public void LoadListinDetails(Listing listing) {
