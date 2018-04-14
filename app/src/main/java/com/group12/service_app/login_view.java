@@ -42,6 +42,10 @@ public class login_view extends AppCompatActivity implements ILogin {
         String email = this.emailField.getText().toString();
         String password = this.passwordField.getText().toString();
 
+        if(!validateLoginForm(email, password)) {
+            return;
+        }
+
         this.userRepository.LoginUser(email, password);
     }
 
@@ -64,5 +68,20 @@ public class login_view extends AppCompatActivity implements ILogin {
 
     public void onLoginFailed(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    private Boolean validateLoginForm(String email, String password) {
+
+        if(email.trim().isEmpty()) {
+            Toast.makeText(this, "An email is required.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(password.trim().isEmpty()) {
+            Toast.makeText(this, "A password is required.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 }

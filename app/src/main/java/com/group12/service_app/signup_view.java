@@ -39,10 +39,15 @@ public class signup_view extends AppCompatActivity implements ISignup {
         String email = this.emailField.getText().toString();
         String password = this.passwordField.getText().toString();
 
+        if(!validateSignupData(displayName, email, password)) {
+            return;
+        }
+
         this.userRepository.CreateUser(email, password, displayName);
 
-        Intent login = new Intent(this, login_view.class);
-        startActivity(login);
+        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_LONG).show();
+
+        finish();
     }
 
     public void onSignupSuccessful(FirebaseUser user) {
@@ -52,5 +57,25 @@ public class signup_view extends AppCompatActivity implements ISignup {
 
     public void onSignupFailed(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean validateSignupData(String displayName, String email, String password) {
+
+        if(displayName.trim().isEmpty()) {
+            Toast.makeText(this, "Name is required.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(email.trim().isEmpty()) {
+            Toast.makeText(this, "Email is required.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(password.trim().isEmpty()) {
+            Toast.makeText(this, "Password is required.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 }
