@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -92,6 +93,16 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         this.priceTextView.setText("$" + listing.price.toString());
         this.addressTextView.setText(listing.zipCode);
         this.descriptionTextView.setText(listing.description);
+    }
+
+    public void respondDeleteButtonClicked(View view){
+        if(listingResponseButton.getText().equals("Delete")){
+            String theListingId = getIntent().getStringExtra("listingID");
+            listingRepository.DeleteListing(theListingId);
+        }
+        else{
+            Log.d("RESPONSE_BUTTON_PRESSED", "The 'Response' button was pressed");
+        }
     }
 
     public void ListingImage(Bitmap bitmap) {
