@@ -1,5 +1,6 @@
 package com.group12.service_app;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.group12.service_app.core.repositories.ListingRepository;
+import com.group12.service_app.core.repositories.interfaces.IListingImageListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,9 +26,11 @@ import com.group12.service_app.data.models.UserPreferences;
 
 import java.util.Iterator;
 
-public class listing_details_view extends AppCompatActivity {
+public class listing_details_view extends AppCompatActivity implements IListingImageListener {
 
     private static final String TAG = "listing_details_view";
+
+    private ListingRepository listingRepository = new ListingRepository();
 
     private ImageView listerImageView;
     private ImageView ratingStar1ImgaeView;
@@ -55,9 +60,11 @@ public class listing_details_view extends AppCompatActivity {
         Double price = getIntent().getDoubleExtra("price", 0);
         final String listingID = getIntent().getStringExtra("lisitngID");
 
+        String id = getIntent().getStringExtra("id");
 
         if(listing != null) {
             this.LoadListinDetails(listing);
+            this.listingRepository.GetListingImage(listing, this);
         }
         else
         {
@@ -65,6 +72,7 @@ public class listing_details_view extends AppCompatActivity {
             this.priceTextView.setText("$" + price.toString());
             this.addressTextView.setText(zipCode);
             this.descriptionTextView.setText(description);
+            this.listingRepository.GetListingImage(id, this);
         }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,5 +104,9 @@ public class listing_details_view extends AppCompatActivity {
         this.priceTextView.setText("$" + listing.price.toString());
         this.addressTextView.setText(listing.zipCode);
         this.descriptionTextView.setText(listing.description);
+    }
+
+    public void ListingImage(Bitmap bitmap) {
+        this.listerImageView.setImageBitmap(bitmap);
     }
 }

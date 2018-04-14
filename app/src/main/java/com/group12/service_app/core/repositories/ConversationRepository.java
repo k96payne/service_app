@@ -9,9 +9,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.group12.service_app.core.repositories.interfaces.IConversationListener;
+import com.group12.service_app.core.repositories.interfaces.IConversationMessageListener;
 import com.group12.service_app.data.models.Conversation;
 import com.group12.service_app.data.models.Listing;
 import com.group12.service_app.data.models.Message;
+import com.group12.service_app.data.models.UserPreferences;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by james on 3/10/18.
@@ -23,54 +32,154 @@ public class ConversationRepository {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference conversationsReference = database.getReference("conversations");
 
+    public void GetMyConversations(final IConversationListener conversationListener) {
+
+        FirebaseUser user = this.userRepository.GetCurrentUser();
+        String userId = user.getUid();
+
+        this.userRepository.GetUserPreferences(userId, new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserPreferences preferences = dataSnapshot.getValue(UserPreferences.class);
+
+                if(preferences == null) { return; }
+
+                for(String conversationId : preferences.messages) {
+
+                    conversationsReference.child(conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Conversation conversation = dataSnapshot.getValue(Conversation.class);
+
+                            if(conversation == null) { return; }
+
+                            conversationListener.onNewConversation(conversation);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
+
+    public void GetConversationMessages(final IConversationMessageListener conversationListener, final Conversation conversation) {
+
+        conversationsReference.child(conversation.conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Conversation liveConversation = dataSnapshot.getValue(Conversation.class);
+
+                for(Message message: liveConversation.messages) {
+                    conversationListener.onNewMessage(message);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
+
+
     public void SendMessage(final String message, final String recipient, final Listing listing) {
 
-        final FirebaseUser currentUser = this.userRepository.GetCurrentUser();
-        final String key = Conversation.CreateConversationKey(currentUser.getUid(), recipient);
-        final Message conversationMessage = new Message(currentUser.getUid(), message);
+        final String currentUserId = this.userRepository.GetCurrentUser().getUid();
+        final Message conversationMessage = new Message(currentUserId, message);
         final ConversationRepository self = this;
 
-        this.conversationsReference.child(key).child("messages").addValueEventListener(new ValueEventListener() {
+        this.userRepository.GetUserPreferences(currentUserId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()) {
+                long count = dataSnapshot.getChildrenCount();
 
-                    self.conversationsReference.child(key).child("messages").push().setValue(conversationMessage);
+                System.out.print(count);
+                String key = dataSnapshot.getKey();
+                UserPreferences preferences = dataSnapshot.getValue(UserPreferences.class);
 
+                if(preferences == null) { return; }
+
+                if(preferences.messages != null && preferences.messages.size() > 0) {
+
+                    for (final String conversationId : preferences.messages) {
+                        //conversationsReference.child(conversationId).addValueEventListener(new ValueEventListener() {
+                        conversationsReference.child(conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot conversationDataSnapshots) {
+
+                                //for (DataSnapshot conversationDataSnapshot : conversationDataSnapshots.getChildren()) {
+
+                                    //Conversation conversation = conversationDataSnapshot.getValue(Conversation.class);
+                                    Conversation conversation = conversationDataSnapshots.getValue(Conversation.class);
+
+                                    if (conversation == null) {
+                                        return;
+                                    }
+
+                                    Boolean isUserConversation1 = conversation.recipient1.equals(currentUserId) && conversation.recipient2.equals(recipient);
+                                    Boolean isUserConversation2 = conversation.recipient2.equals(currentUserId) && conversation.recipient1.equals(recipient);
+
+                                    //If we have a conversation between the two people specified, this is where we need to append our message
+                                    if (isUserConversation1 || isUserConversation2) {
+                                        Map<String, Object> updates = new HashMap<>();
+
+                                        conversation.messages.add(conversationMessage);
+
+                                        //updates.put("/conversations/" + conversationId + "/messages", (Message[])messages.toArray());
+                                        updates.put("/conversations/" + conversationId, conversation);
+
+                                        database.getReference().updateChildren(updates);
+                                    }
+
+                                //}
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
                 } else {
 
+                    //This person doesn't have any conversations. These two people haven't talked before. We need to create a conversation between them.
                     Conversation conversation = new Conversation();
+                    DatabaseReference reference = conversationsReference.push();
+                    String conversationKey = reference.getKey();
 
-                    conversation.listingId = listing.id;
-                    conversation.recipient1 = currentUser.getUid();
+                    conversation.conversationId = conversationKey;
+                    conversation.recipient1 = currentUserId;
                     conversation.recipient2 = recipient;
-                    conversation.messages = new Message[] { conversationMessage };
+                    conversation.listingId = listing.id;
+                    conversation.messages = new ArrayList<>();
 
-                    //Add our conversation.
-                    self.conversationsReference.child(key).setValue(conversation);
+                    conversation.messages.add(conversationMessage);
 
-                    //Add a reference to the conversation to each user's preferences so we can find them later.
-                    self.userRepository.AddConversationToUser(currentUser.getUid(), key);
-                    self.userRepository.AddConversationToUser(recipient, key);
-
+                    try {
+                        reference.setValue(conversation);
+                    } catch(Exception ex) {
+                        System.out.print(ex.getMessage());
+                    }
+                    userRepository.AddConversationToUser(currentUserId, conversationKey);
+                    userRepository.AddConversationToUser(recipient, conversationKey);
                 }
-
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                System.out.print(databaseError.getMessage());
             }
         });
 
     }
 
-    public void GetConversationForListing(FirebaseUser user, Listing listing) {
-
-        //this.userRepository.GetUserPreferences(user.getUid(), );
-
-    }
 
 }

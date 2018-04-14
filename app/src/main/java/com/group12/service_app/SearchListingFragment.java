@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,7 +41,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.group12.service_app.core.repositories.*;
 import com.group12.service_app.core.repositories.interfaces.*;
+import com.group12.service_app.data.models.Conversation;
 import com.group12.service_app.data.models.Listing;
+import com.group12.service_app.data.models.Message;
 import com.group12.service_app.data.models.listings;
 //import com.group12.service_app.data.models.firebasesearch;
 
@@ -69,10 +72,10 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
 //    private OnFragmentInteractionListener mListener;
 
-   private SearchView search_text;
-  // private Button mSearchButton;
-   private  RecyclerView Listings_result;
-   private DatabaseReference mListingDatabase ;
+    private SearchView search_text;
+    // private Button mSearchButton;
+    private  RecyclerView Listings_result;
+    private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
 
     public SearchListingFragment() {
@@ -83,21 +86,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
     public void onStart() {
         super.onStart();
         Log.e("On start", "search listings accessed");
-       // Spinner SortingSpinner = getView().findViewById(R.id.SortingSpinnerId);
 
-       // ArrayAdapter<CharSequence>sortingType_ArrayAdapter =  ArrayAdapter.createFromResource(getActivity(), R.array.sorting_categories,android.R.layout.simple_spinner_dropdown_item);
-
-       // sortingType_ArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-       // SortingSpinner.setAdapter(sortingType_ArrayAdapter);
-        //SortingSpinner.setOnItemSelectedListener(this);
-
-
-
-//        String[] Listings = {"Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
-//                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7",
-//                "Listing0","Listing1","Listing2","Listing3","Listing4","Listing5","Listing6","Listing7"};final ArrayList<String> list = new ArrayList<>();
-
-    //     Added by Kyle
         final ArrayList<Listing> Listings = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("listings");
 
@@ -107,8 +96,6 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                 try {
                     for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Listing listing = postSnapshot.getValue(Listing.class);
-                        //Listings.add(listing);
-                       // System.out.println(listing.title);
                     }
                 }
                 catch(Exception e) {
@@ -120,37 +107,14 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                 // handle
             }
         });
-        // End Added by Kyle
-//
-//        ListAdapter ad = new CustomAdapter(getActivity(),Listings);
-//
-//        ListView Listings_ListView = (ListView) getView().findViewById(R.id.myListView);
-//        Listings_ListView.setAdapter(ad);
-//        Listings_ListView.setOnItemClickListener(
-//                new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                        String listing = String.valueOf(adapterView.getItemAtPosition(i));
-//                        Toast.makeText(getActivity(),listing, Toast.LENGTH_LONG).show();
-//
-//                    }
-//                }
-//        );
 
-        // comment
 
         mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
-       search_text = (SearchView) getView().findViewById(R.id.search_text);
-
+        search_text = (SearchView) getView().findViewById(R.id.search_text);
         Listings_result = (RecyclerView) getView().findViewById(R.id.Listings_result);
-
-       // mSearchButton = (Button) getView().findViewById(R.id.mSearchButton);
 
         Listings_result.setHasFixedSize(true);
         Listings_result.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
 
         search_text.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -166,23 +130,9 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                 return true;
             }
 
-
         });
 
-
         firebaseListingSearch("");
-//        mSearchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                String input_text = search_text.getQuery().toString();
-//                firebaseListingSearch(input_text);
-//
-//            }
-//        }
-
-        //);
-
     }
 
     private void firebaseListingSearch(String input_text){
@@ -199,20 +149,22 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
                 Log.e("Listing", list.title);
                 viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
-                viewHolder.goButton.setOnClickListener(new View.OnClickListener() {
+                viewHolder.myView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        System.out.print("Clicked!");
                         Intent moveToDetails = new Intent(getActivity(), listing_details_view.class);
                         moveToDetails.putExtra("title", list.getTitle());
                         moveToDetails.putExtra("description", list.getDescription());
                         moveToDetails.putExtra("price", list.getPrice());
                         moveToDetails.putExtra("address", list.getZipCode());
+                        moveToDetails.putExtra("id", list.getId());
                         moveToDetails.putExtra("listingID", list.getId());
                         startActivity(moveToDetails);
                     }
                 });
                 //System.out.println("test");
-               // System.out.println(list.title);
+                // System.out.println(list.title);
             }
         };
         //System.out.println("test");
@@ -245,11 +197,11 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             listing_descirption.setText(ListingDescription);
             Listing_Title.setText(ListingTitle);
             Listing_Price.setText("$ " + String.format ("%.0f", ListingPrice));
-           // Listing_Price.setText(String.valueOf(ListingPrice));
+            // Listing_Price.setText(String.valueOf(ListingPrice));
             Listing_zipCode.setText(ListingZipCode);
-          //  Listing_Price.setText(ListingPrice);
+            //  Listing_Price.setText(ListingPrice);
 
-         //   Glide.with(getApplicationContext()).load()
+            //   Glide.with(getApplicationContext()).load()
 
         }
     }

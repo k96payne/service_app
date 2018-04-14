@@ -15,11 +15,12 @@ import java.util.ListIterator;
  */
 
 public class Conversation {
+    public String conversationId;
     public String listingId;
     public String recipient1;
     public String recipient2;
 
-    public Message[] messages;
+    public ArrayList<Message> messages;
 
     public static String CreateConversationKey(String recipient1, String recipient2) {
 
