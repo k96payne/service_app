@@ -6,21 +6,30 @@ package com.group12.service_app.data.models;
 
 public class listings {
 
-    public String description, id, title, ownerId;
+    public String description, id, title, ownerId, time, date;
     public double price;
     public String zipCode;
     public listings(){}
 
-    public listings(String description, String id, String title,String zipCode, double price, String ownerId) {
+    public listings(String description, String id, String title,String zipCode, double price, String ownerId, String time, String date) {
         this.description = description;
         this.id = id;
         this.title = title;
         this.price = price;
         this.zipCode = zipCode;
         this.ownerId = ownerId;
+        this.date = date;
+        this.time = time;
 
     }
 
+    public String getTime(){
+        return  time;
+    }
+
+    public String getDate(){
+        return date;
+    }
     public String getZipCode() {
         return zipCode;
     }
@@ -33,6 +42,13 @@ public class listings {
         return description;
     }
 
+    public void setDate(String date){
+        this.date = date;
+    }
+
+    public void setTime(String time){
+        this.time = time;
+    }
     public void setDescription(String description) {
         this.description = description;
     }

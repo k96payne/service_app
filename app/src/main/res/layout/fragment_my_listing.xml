@@ -183,4 +183,12 @@
 
 
     </GridLayout>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/log_out_user"
+        android:layout_gravity="bottom|center_horizontal"
+        />
 </FrameLayout>

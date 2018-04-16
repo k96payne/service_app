@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -76,6 +77,8 @@ public class MyListingFragment extends Fragment implements IListingReader {
     private  RecyclerView Listings_result;
     private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
+    private Button mSignout;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     public MyListingFragment() {
         // Required empty public constructor
@@ -85,6 +88,7 @@ public class MyListingFragment extends Fragment implements IListingReader {
     public void onStart() {
         super.onStart();
 
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener);
 
         mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
 
@@ -136,6 +140,9 @@ public class MyListingFragment extends Fragment implements IListingReader {
                         moveToDetails.putExtra("address", list.getZipCode());
                         moveToDetails.putExtra("id", list.getId());
                         moveToDetails.putExtra("listingOwnerId", list.getOwnerId());
+                        moveToDetails.putExtra("time", list.getTime());
+                        moveToDetails.putExtra("date", list.getDate());
+
                         startActivity(moveToDetails);
                     }
                 });
@@ -250,10 +257,46 @@ public class MyListingFragment extends Fragment implements IListingReader {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        View view = inflater.inflate(R.layout.fragment_my_listing, container, false);
         // Inflate the layout for this fragment
         Log.e("OnCreateView", "onCreateView: MyListingFragment");
-        return inflater.inflate(R.layout.fragment_my_listing, container, false);
+        mSignout = (Button) view.findViewById(R.id.logout);
+        setupFirebaseListener();
+        mSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+            }
+        });
+        return view;
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        if(mAuthStateListener != null){
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener);
+        }
+    }
+
+    private void setupFirebaseListener(){
+        Log.d("Firebase listener", "setup auth state listener");
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    Log.d("Active user", "onAuthStateChanged: signed in:" + user.getUid());
+                }
+                else{
+                    Log.d("Signout", "onAuthStateChanged: signed_out");
+                    Toast.makeText(getActivity(),"Signed Out", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(),login_view.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }
+        };
     }
 
 

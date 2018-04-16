@@ -57,6 +57,7 @@ public class login_view extends AppCompatActivity implements ILogin {
     public void move_to_main_view() {
         Intent user_login = new Intent(this, MainActivity.class);
         startActivity(user_login);
+        finish();
     }
 
     public void onLoginSuccessful(FirebaseUser user) {

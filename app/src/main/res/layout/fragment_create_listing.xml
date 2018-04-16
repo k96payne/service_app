@@ -38,6 +38,24 @@
         android:inputType="textPostalAddress" />
 
     <EditText
+        android:id="@+id/listing_date"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_date"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/listing_time"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/listing_time"
+        android:inputType="time" />
+
+    <EditText
         android:id="@+id/listing_category"
         android:layout_width="match_parent"
         android:layout_height="10dp"

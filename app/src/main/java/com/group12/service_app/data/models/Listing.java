@@ -29,6 +29,8 @@ public class Listing implements Serializable {
     public String zipCode;
     public Double price;
     public String ownerId;
+    public String time;
+    public String date;
 
 }
 

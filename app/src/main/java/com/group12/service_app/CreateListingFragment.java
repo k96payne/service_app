@@ -54,6 +54,8 @@ public class CreateListingFragment extends Fragment {
     public EditText listing_location;
     public EditText listing_description;
     public EditText listing_contact;
+    public EditText listing_time;
+    public EditText listing_date;
     public ImageView listing_image_view;
     public Button select_listing_image;
     public Button create_listing;
@@ -85,7 +87,10 @@ public class CreateListingFragment extends Fragment {
         listing_location = root.findViewById(R.id.listing_location);
         listing_description = root.findViewById(R.id.listing_description);
         listing_contact = root.findViewById(R.id.listing_contact);
+        listing_time = root.findViewById(R.id.listing_time);
+        listing_date = root.findViewById(R.id.listing_date);
         listing_image_view = root.findViewById(R.id.listing_image_view);
+
         select_listing_image = root.findViewById(R.id.select_image_button);
 
         create_listing = root.findViewById(R.id.create_listing);
@@ -117,7 +122,15 @@ public class CreateListingFragment extends Fragment {
                 intent.putExtra("id", listing.id);
                 intent.putExtra("listingOwnerId", listing.ownerId);
                 getActivity().startActivity(intent);
-
+                listing_title.setText("");
+                listing_price.setText("");
+                listing_category.setText("");
+                listing_location.setText("");
+                listing_description.setText("");
+                listing_contact.setText("");
+                listing_time.setText("");
+                listing_date.setText("");
+                listing_image_view.setImageResource(android.R.drawable.ic_menu_camera);
             }
         });
 
@@ -167,6 +180,8 @@ public class CreateListingFragment extends Fragment {
         listing.zipCode = listing_location.getText().toString();
         listing.id = UUID.randomUUID().toString();
         listing.ownerId = currentUser.getUid();
+        listing.date = listing_date.getText().toString();
+        listing.time = listing_time.getText().toString();
 
         return listing;
     }

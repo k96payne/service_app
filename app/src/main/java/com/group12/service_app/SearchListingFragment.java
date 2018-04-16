@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Parcelable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.widget.SearchView;
 import android.app.Activity;
+
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -74,9 +77,15 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
     private SearchView search_text;
     // private Button mSearchButton;
-    private  RecyclerView Listings_result;
+    protected  RecyclerView Listings_result;
     private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    protected Parcelable listState;
+
+
+
+
 
     public SearchListingFragment() {
         // Required empty public constructor
@@ -114,6 +123,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         Listings_result = (RecyclerView) getView().findViewById(R.id.Listings_result);
 
         Listings_result.setHasFixedSize(true);
+
+
         Listings_result.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         search_text.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -135,9 +146,10 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         firebaseListingSearch("");
     }
 
+
     private void firebaseListingSearch(String input_text){
         if(input_text != null){
-            Toast.makeText(getActivity(),"Started Search", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Started Search", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -148,7 +160,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
             protected void populateViewHolder(final listingsViewHolder viewHolder, final listings list, final int position) {
 
                 Log.e("Listing", list.title);
-                viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode);
+
+                viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode, list.date, list.time);
                 viewHolder.myView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,6 +174,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
                         moveToDetails.putExtra("id", list.getId());
                         moveToDetails.putExtra("listingID", list.getId());
                         moveToDetails.putExtra("listingOwnerId", list.getOwnerId());
+                        moveToDetails.putExtra("time", list.getTime());
+                        moveToDetails.putExtra("date", list.getDate());
                         startActivity(moveToDetails);
                     }
                 });
@@ -186,7 +201,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
         }
 
-        public  void setListings(String ListingProviderName, String ListingDescription, String ListingTitle, double ListingPrice, String ListingZipCode){
+        public  void setListings(String ListingProviderName, String ListingDescription, String ListingTitle, double ListingPrice, String ListingZipCode, String ListingTime, String ListingDate){
 
             TextView Listing_provider_name = (TextView) myView.findViewById(R.id.ProviderName);
             TextView listing_descirption = (TextView) myView.findViewById(R.id.ListingDescription);
@@ -251,17 +266,18 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //        return fragment;
 //    }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
-//    }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 
         // Inflate the layout for this fragment
         Log.e("OnCreateView", "onCreateView: SearchListingFragment");
@@ -308,4 +324,6 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+
 }

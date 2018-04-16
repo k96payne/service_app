@@ -40,6 +40,8 @@ public class listing_details_view extends AppCompatActivity implements IListingI
     private TextView addressTextView;
     private TextView descriptionTextView;
     private Button listingResponseButton;
+    private TextView dueDateLabel;
+    private TextView dueTimeLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,13 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         this.priceTextView = (TextView) findViewById(R.id.payoffPriceLabel);
         this.addressTextView = (TextView) findViewById(R.id.dueAddressLabel);
         this.descriptionTextView = (TextView) findViewById(R.id.dueDescriptionLabel);
+        this.dueTimeLabel = (TextView) findViewById(R.id.dueTimeLabel);
+        this.dueDateLabel = (TextView) findViewById(R.id.dueDateLabel);
         this.listingResponseButton = (Button) findViewById(R.id.respondToListingButton);
 
         Listing listing = (Listing)getIntent().getSerializableExtra("listing");
+        String time = getIntent().getStringExtra("time");
+        String date = getIntent().getStringExtra("date");
         String title = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
         String zipCode = getIntent().getStringExtra("address");
@@ -69,6 +75,8 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         }
         else
         {
+            this.dueDateLabel.setText(date);
+            this.dueTimeLabel.setText(time);
             this.listingTitleTextView.setText(title);
             this.priceTextView.setText("$" + price.toString());
             this.addressTextView.setText(zipCode);
@@ -91,6 +99,8 @@ public class listing_details_view extends AppCompatActivity implements IListingI
     public void LoadListinDetails(Listing listing) {
         if(listing == null) return;
 
+        this.dueDateLabel.setText(listing.date);
+        this.dueTimeLabel.setText(listing.time);
         this.listingTitleTextView.setText(listing.title);
         this.priceTextView.setText("$" + listing.price.toString());
         this.addressTextView.setText(listing.zipCode);
