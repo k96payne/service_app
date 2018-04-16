@@ -2,14 +2,16 @@ package com.group12.service_app;
 
 
 import android.support.annotation.NonNull;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
+
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
@@ -32,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewEx bottomNavigationView = (BottomNavigationViewEx) findViewById(R.id.bottomNavView_Bar);
         //BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
 
         //bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
+        BottomNavigationViewHelper.setupBottomNavView(bottomNavigationView);
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(null);
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void SetupBottomNavigationView(){
 
+    }
 
 }

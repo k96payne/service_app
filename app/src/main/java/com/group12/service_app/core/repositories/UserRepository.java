@@ -141,6 +141,7 @@ public class UserRepository {
         return this.firebaseAuth.getCurrentUser();
     }
 
+
     private void CreateUserPreferences(FirebaseUser user, String displayName) {
 
         if(user == null) { return; }

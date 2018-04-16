@@ -15,18 +15,18 @@
         android:layout_marginBottom="?attr/actionBarSize"/>
 
 
-        <android.support.design.widget.BottomNavigationView
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottomNavView_Bar"
             android:layout_gravity="bottom"
-            app:itemBackground="?attr/colorPrimary"
+            app:itemBackground="@color/colorPrimary"
             app:itemIconTint="@drawable/navbar_item_selector"
             app:itemTextColor="@drawable/navbar_item_selector"
             app:menu="@menu/bottom_navigation_menu">
 
 
-        </android.support.design.widget.BottomNavigationView>
+        </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
 </FrameLayout>
 

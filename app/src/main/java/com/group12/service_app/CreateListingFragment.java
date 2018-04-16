@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -115,7 +115,7 @@ public class CreateListingFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), listing_details_view.class);
                 intent.putExtra("listing", listing);
                 intent.putExtra("id", listing.id);
-
+                intent.putExtra("listingOwnerId", listing.ownerId);
                 getActivity().startActivity(intent);
 
             }

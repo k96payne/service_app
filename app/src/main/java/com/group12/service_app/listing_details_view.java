@@ -80,7 +80,9 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userID = user.getUid();
         Log.d("PRINT_LISTING_OWNERID", "listing Owner ID: " + listingOwnerID);
+        Log.d("LISTING_ID", id);
         Log.d("PRINT_USERID", "User ID: " + userID);
+        listingOwnerID.equals(userID);
         if(listingOwnerID.equals(userID)){
             listingResponseButton.setText("Delete");
         }
