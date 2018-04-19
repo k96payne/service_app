@@ -85,24 +85,27 @@
     <Button
         android:id="@+id/select_image_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_weight="1"
-        android:text="@string/selectImage" />
+        android:background="@drawable/button_main_style"
+        android:text="@string/selectImage"
+        android:textColor="#FFFFFF" />
 
     <ImageView
         android:id="@+id/listing_image_view"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="35dp"
         android:layout_weight="1"
         android:src="@android:drawable/ic_menu_camera" />
 
     <Button
         android:id="@+id/create_listing"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="7dp"
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:background="@drawable/button_main_style"
+        android:elevation="2dp"
         android:padding="10dp"
         android:text="@string/create_listing"
         android:textColor="#FFFFFF" />

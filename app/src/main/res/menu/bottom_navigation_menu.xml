@@ -4,25 +4,25 @@
 
     <item
         android:id="@+id/listing_search"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_search"
         android:title="Search"
          />
 
     <item
         android:id="@+id/Create_listing"
         android:title="Create"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_create"
         />
 
     <item
         android:id="@+id/my_listing"
         android:title="My Listings"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_user"
         />
 
     <item
         android:id="@+id/messages"
         android:title="Messages"
-        android:icon="@drawable/ic_launcher_background" />
+        android:icon="@drawable/ic_messages" />
 
 </menu>
