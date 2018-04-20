@@ -86,7 +86,7 @@ public class ConversationRepository {
     }
 
 
-    public void SendMessage(final String message, final String recipient, final Listing listing) {
+    public void SendMessage(final String message, final String recipient) {
 
         final String currentUserId = this.userRepository.GetCurrentUser().getUid();
         final Message conversationMessage = new Message(currentUserId, message);
@@ -157,7 +157,7 @@ public class ConversationRepository {
                     conversation.conversationId = conversationKey;
                     conversation.recipient1 = currentUserId;
                     conversation.recipient2 = recipient;
-                    conversation.listingId = listing.id;
+                    //conversation.listingId = listing.id;
                     conversation.messages = new ArrayList<>();
 
                     conversation.messages.add(conversationMessage);

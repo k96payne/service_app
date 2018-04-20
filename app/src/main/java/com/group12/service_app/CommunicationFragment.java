@@ -23,8 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.group12.service_app.core.repositories.ConversationRepository;
+import com.group12.service_app.core.repositories.UserRepository;
 import com.group12.service_app.core.repositories.interfaces.IConversationListener;
 import com.group12.service_app.data.models.Conversation;
+import com.group12.service_app.data.models.UserPreferences;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class CommunicationFragment extends Fragment implements IConversationList
 //    private OnFragmentInteractionListener mListener;
 
     private ConversationRepository conversationRepository = new ConversationRepository();
+    private UserRepository userRepository = new UserRepository();
     private ArrayList<Conversation> conversations = new ArrayList<>();
     private ListView listView;
 
@@ -84,29 +87,49 @@ public class CommunicationFragment extends Fragment implements IConversationList
 //    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                                    Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_communication, container, false);
-        listView = (ListView) view.findViewById(R.id.conversationMenu);
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-//        FILL THE CONVERSATIONS ARRAYLIST WITH CONVERSATIONS (NOT WORKING CURRENTLY CONVERSATIONS IS STILL EMPTY)
+        View view = inflater.inflate(R.layout.fragment_communication, container, false);
+        this.listView = (ListView) view.findViewById(R.id.conversationMenu);
+
         conversationRepository.GetMyConversations(this);
 
-//       TESTING IF CONVERSATIONS CAN BE DISPLAYED
-//        Conversation testConvo = new Conversation();
-//        testConvo.recipient1 = "recipient 1";
-//        testConvo.recipient2 = "recipient 2";
-//        testConvo.conversationId = "Test convo";
-//        testConvo.listingId = "Test Convo listingId";
-//        conversations.add(testConvo);
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        conversations.clear();
+        conversationRepository.GetMyConversations(this);
+    }
+
+    private void setListViewData() {
 
 //        FILL THE LISTVIEW WITH THE CONVERSATIONS ARRAYLIST
-        ArrayAdapter<Conversation> listViewAdapter = new ArrayAdapter<Conversation>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                conversations
-        );
+        ArrayAdapter<Conversation> listViewAdapter = new ArrayAdapter<Conversation>( getActivity(), android.R.layout.simple_list_item_1, conversations) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                final Conversation conversation =  conversations.get(position);
+                final TextView textView = (TextView)getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
+                String recipient = conversation.recipient1 == userRepository.GetCurrentUser().getUid() ? conversation.recipient2 : conversation.recipient1;
+
+                textView.setText(recipient);
+
+                userRepository.GetUserPreferences(recipient, new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        UserPreferences preferences = (UserPreferences) dataSnapshot.getValue(UserPreferences.class);
+                        textView.setText(preferences.displayName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+
+                return textView;
+            }
+        };
 
         listView.setAdapter(listViewAdapter);
         listView.setClickable(true);
@@ -114,63 +137,21 @@ public class CommunicationFragment extends Fragment implements IConversationList
 //        MOVES TO CONVERSATION BETWEEN USER AND SOMEONE ELSE ON CLICK OF ITEM IN LISTVIEW
 //        (crashes but haven't tested with real listing yet)
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Object object = listView.getItemAtPosition(position);
-                    Conversation conversation = (Conversation)object;
-                    Intent moveToConversation = new Intent(getActivity(), conversation_view.class);
-                    //in order to putExtra of a conversation you must be able to get the conversation held in the listView at that position
-                    moveToConversation.putExtra("conversation", (Serializable)conversation);
-                    startActivity(moveToConversation);
-                }
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Object object = listView.getItemAtPosition(position);
+                Conversation conversation = (Conversation)object;
+                Intent moveToConversation = new Intent(getActivity(), conversation_view.class);
+                //in order to putExtra of a conversation you must be able to get the conversation held in the listView at that position
+                moveToConversation.putExtra("conversation", (Serializable)conversation);
+                startActivityForResult(moveToConversation, 1);
+            }
         });
-
-        // Inflate the layout for this fragment
-        return view;
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
-
 
     public void onNewConversation(Conversation conversation){
         conversations.add(conversation);
+        this.setListViewData();
     }
 
 }

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -14,106 +16,113 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.group12.service_app.core.repositories.ConversationRepository;
+import com.group12.service_app.core.repositories.UserRepository;
 import com.group12.service_app.core.repositories.interfaces.IConversationListener;
 import com.group12.service_app.core.repositories.interfaces.IConversationMessageListener;
 import com.group12.service_app.data.models.Conversation;
 import com.group12.service_app.data.models.Listing;
 import com.group12.service_app.data.models.Message;
+import com.group12.service_app.data.models.UserPreferences;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class conversation_view extends AppCompatActivity implements IConversationMessageListener {
+public class conversation_view extends AppCompatActivity {
 
     private ConversationRepository conversationRepository = new ConversationRepository();
+    private UserRepository userRepository = new UserRepository();
     private FirebaseListAdapter<Message> adapter;
-    private ArrayList<Message> messages = new ArrayList<>();
     private Conversation conversation;
     private Listing listing;
     private String recipient;
     private FirebaseUser currentUser;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_view);
 
-//        INFO USER FOR INITIALMESSAGE SENDING THROUGH PRESS OF RESPONSE BUTTON IN DETAILS VIEW
-        String startConversation = getIntent().getStringExtra("conversationStart");
-        listing = (Listing) getIntent().getSerializableExtra("listing");
-        recipient = getIntent().getStringExtra("recipientID");
-        if(startConversation.equals("startConversation")){
-//            CURRENT ERROR IF IT ISN'T USER'S FIRST CONVERSATION
-//            MESSAGE ISN'T SENT/CONVERSATION ISN'T CREATED
+        this.currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        this.listView = (ListView)findViewById(R.id.list_of_messages);
+        this.conversation = (Conversation)getIntent().getSerializableExtra("conversation");
+        this.recipient = getIntent().getStringExtra("recipientID");
+
+        if(conversation.messages.isEmpty()) {
             String initialMessage = "Hi, I am interested in your listing";
-            sendInitialMessage(initialMessage, recipient, listing);
+            conversationRepository.SendMessage(initialMessage, recipient);
         }
 
-//        INFO USED IF CONVESATION IS OPENED FROM CONVERSATIONS FRAGMENT
-        conversation = (Conversation) getIntent().getSerializableExtra("conversation");
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        setListViewData();
 
-//        TRYING TO DISPLY MESSAGES BETWEEN USER AND SELECTED OTHER USER
-//        STILL NEED TO IMPLEMENT MORE LOGIC FOR THIS
-//        PLAN TO CREATE ARRAYLIST OF MESSAGES AND DISPLAY SIMILAR TO CONVERSATIONS
-//        CANNOT USER GETCONVERSATIONS MESSAGES IF IT IS A NEW CONVERSATION BECAUSE NO CONVERSATION TO PASS IN
-//        conversationRepository.GetConversationMessages(this, conversation);
-
-//        LOGIC FOR SENDING MESSAGE
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
-                String messageRecipient;
+                String message = input.getText().toString();
                 if (conversation != null) {
-                    if (currentUser.getUid().equals(conversation.recipient1)) {
-                        messageRecipient = conversation.recipient2;
-                        conversationRepository.SendMessage(input.getText().toString(), messageRecipient, listing);
-                    } else {
-                        messageRecipient = conversation.recipient1;
-                        conversationRepository.SendMessage(input.getText().toString(), messageRecipient, listing);
-                    }
-                    //clear the input
-                    input.setText("");
+                    String messageRecipient = currentUser.getUid().equals(conversation.recipient1) ? conversation.recipient2 : conversation.recipient1;
+                    sendMessage(message, messageRecipient);
+                } else{
+                    sendMessage(message, recipient);
                 }
-                else{
-                    messageRecipient = recipient;
-                    conversationRepository.SendMessage(input.getText().toString(), messageRecipient, listing);
-                    input.setText("");
-                }
+                input.setText("");
             }
         });
     }
 
+    private void setListViewData() {
 
-    //TODO Display the chat messages
-//    DIFFERENT ATTEMPT AT DISPLAYING MESSAGES, DON'T THINK IT WILL WORK FOR THIS APP THOUGH
-    public void displayMessages(){
-        ListView listofMessages = (ListView)findViewById(R.id.list_of_messages);
-        adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.messages, FirebaseDatabase.getInstance().getReference()) {
+        ArrayAdapter<Message> listViewAdapter = new ArrayAdapter<Message>( this, android.R.layout.simple_list_item_1, this.conversation.messages) {
             @Override
-            protected void populateView(View v, Message model, int position) {
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageSender = (TextView)v.findViewById(R.id.message_sender);
+            public View getView(int position, View convertView, ViewGroup parent) {
+                final Message message = conversation.messages.get(position);
+                final TextView textView = convertView != null ? (TextView)convertView : new TextView(getContext());
+
+                textView.setText(message.toString());
+
+                userRepository.GetUserPreferences(message.sender, new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        UserPreferences preferences = (UserPreferences) dataSnapshot.getValue(UserPreferences.class);
+
+                        textView.setText(preferences.displayName + ": " + message.message);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                return textView;
             }
         };
 
-        listofMessages.setAdapter(adapter);
+        this.listView.setAdapter(listViewAdapter);
+        this.listView.setClickable(true);
+        this.scrollToBottom();
+
     }
 
-//    SENDING INITIAL MESSAGE IF RESPOND BUTTON CLICKED
-    public void sendInitialMessage(String initialMessage, String recipient, Listing listing)
-    {
-        conversationRepository.SendMessage(initialMessage, recipient, listing);
+    private void sendMessage(String message, String recipient) {
+        this.conversationRepository.SendMessage(message, recipient);
+        this.conversation.messages.add(new Message(currentUser.getUid(), message));
+        this.setListViewData();
+        this.scrollToBottom();
     }
 
-    public void onNewMessage(Message message){
-        messages.add(message);
+    private void scrollToBottom() {
+        this.listView.setSelection(this.conversation.messages.size() - 1);
     }
 
 }

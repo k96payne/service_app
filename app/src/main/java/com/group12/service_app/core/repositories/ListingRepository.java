@@ -1,12 +1,16 @@
 package com.group12.service_app.core.repositories;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,9 +24,11 @@ import com.google.firebase.storage.UploadTask;
 import com.group12.service_app.core.repositories.interfaces.IListingImageListener;
 import com.group12.service_app.core.repositories.interfaces.IListingReader;
 import com.group12.service_app.data.models.Listing;
+import com.group12.service_app.data.models.UserPreferences;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
+import java.util.concurrent.Executor;
 
 /**
  * Created by james on 2/25/18.

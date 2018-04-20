@@ -78,6 +78,8 @@ public class listings {
         this.price = price;
     }
 
-    public String getOwnerId() {return ownerId;}
+    public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
+
+    public String getOwnerId() { return this.ownerId; }
 
 }

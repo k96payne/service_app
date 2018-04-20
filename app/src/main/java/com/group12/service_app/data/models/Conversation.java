@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,9 +18,9 @@ import java.util.ListIterator;
  * Created by james on 3/10/18.
  */
 
-public class Conversation {
+public class Conversation implements Serializable {
     public String conversationId;
-    public String listingId;
+    //public String listingId;
     public String recipient1;
     public String recipient2;
 

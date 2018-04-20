@@ -47,6 +47,7 @@ import com.group12.service_app.core.repositories.interfaces.*;
 import com.group12.service_app.data.models.Conversation;
 import com.group12.service_app.data.models.Listing;
 import com.group12.service_app.data.models.Message;
+import com.group12.service_app.data.models.UserPreferences;
 import com.group12.service_app.data.models.listings;
 //import com.group12.service_app.data.models.firebasesearch;
 
@@ -77,8 +78,8 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
     private SearchView search_text;
     // private Button mSearchButton;
-    protected  RecyclerView Listings_result;
-    private DatabaseReference mListingDatabase ;
+    private  RecyclerView Listings_result;
+    //private DatabaseReference mListingDatabase ;
     public ListingRepository ListingRepository = new ListingRepository();
     public final static String LIST_STATE_KEY = "recycler_list_state";
     protected Parcelable listState;
@@ -86,6 +87,7 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
 
 
+    public UserRepository UserRepository = new UserRepository();
 
     public SearchListingFragment() {
         // Required empty public constructor
@@ -118,13 +120,11 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         });
 
 
-        mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
+        //mListingDatabase = FirebaseDatabase.getInstance().getReference("listings");
         search_text = (SearchView) getView().findViewById(R.id.search_text);
         Listings_result = (RecyclerView) getView().findViewById(R.id.Listings_result);
 
         Listings_result.setHasFixedSize(true);
-
-
         Listings_result.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         search_text.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -146,14 +146,13 @@ public class SearchListingFragment extends Fragment implements IListingReader {
         firebaseListingSearch("");
     }
 
-
     private void firebaseListingSearch(String input_text){
         if(input_text != null){
             Toast.makeText(getActivity(),"Started Search", Toast.LENGTH_SHORT).show();
         }
 
 
-        Query firebaseSearchQuery  = mListingDatabase.orderByChild("title").startAt(input_text).endAt(input_text + "\uf8ff");
+        Query firebaseSearchQuery  = FirebaseDatabase.getInstance().getReference("listings").orderByChild("title").startAt(input_text).endAt(input_text + "\uf8ff");
 
         FirebaseRecyclerAdapter< listings, listingsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<listings, listingsViewHolder>(listings.class, R.layout.custom_row, listingsViewHolder.class , firebaseSearchQuery) {
             @Override
@@ -161,7 +160,22 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 
                 Log.e("Listing", list.title);
 
-                viewHolder.setListings(list.id, list.description, list.title, list.price, list.zipCode, list.date, list.time);
+                viewHolder.setListings("", list.description, list.title, list.price, list.zipCode, list.time, list.date);
+
+                UserRepository.GetUserPreferences(list.ownerId, new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        UserPreferences preferences = dataSnapshot.getValue(UserPreferences.class);
+
+                        if(preferences == null) { return; }
+
+                        //viewHolder.setListings(preferences.displayName, list.description, list.title, list.price, list.zipCode);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+
                 viewHolder.myView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -266,18 +280,17 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //        return fragment;
 //    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
-    }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 
         // Inflate the layout for this fragment
         Log.e("OnCreateView", "onCreateView: SearchListingFragment");
@@ -324,6 +337,4 @@ public class SearchListingFragment extends Fragment implements IListingReader {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
-
-
 }
