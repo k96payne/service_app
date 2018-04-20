@@ -2,6 +2,9 @@ package com.group12.service_app.data.models;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,5 +51,17 @@ public class Conversation {
         }
 
         return key;
+    }
+
+    //Added to populate listView of CommunicationsFragment
+    @Override
+    public String toString(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser.getUid().equals(this.recipient1)){
+            return this.recipient2;
+        }
+        else{
+            return this.recipient1;
+        }
     }
 }
