@@ -112,7 +112,12 @@ public class CommunicationFragment extends Fragment implements IConversationList
             public View getView(int position, View convertView, ViewGroup parent) {
                 final Conversation conversation =  conversations.get(position);
                 final TextView textView = (TextView)getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
-                String recipient = conversation.recipient1 == userRepository.GetCurrentUser().getUid() ? conversation.recipient2 : conversation.recipient1;
+                String recipient;
+                if(conversation.recipient1.equals(userRepository.GetCurrentUser().getUid())){
+                    recipient = conversation.recipient2;
+                } else {
+                    recipient = conversation.recipient1;
+                }
 
                 textView.setText(recipient);
 
