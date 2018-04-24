@@ -168,6 +168,12 @@ public class conversation_view extends AppCompatActivity implements IConversatio
 
     }
 
+    public void onNewMessageIncoming() {
+        if(this.conversation != null && this.conversation.messages != null) {
+            this.conversation.messages.clear();
+        }
+    }
+
     public void onNewMessage(Message message) {
         this.conversation.messages.add(message);
         this.setListViewData();

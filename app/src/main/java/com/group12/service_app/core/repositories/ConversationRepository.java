@@ -118,6 +118,8 @@ public class ConversationRepository {
 
     public void GetConversationMessages(final IConversationMessageListener conversationListener, final Conversation conversation, final Boolean onlyNewMessages) {
 
+        if(conversationListener == null) { return; }
+
         DatabaseReference reference = conversationsReference.child(conversation.conversationId);
         ValueEventListener listener = new ValueEventListener() {
 
@@ -130,6 +132,8 @@ public class ConversationRepository {
                     firstTimeExecuted = false;
                     return;
                 }
+
+                conversationListener.onNewMessageIncoming();
 
                 Conversation liveConversation = dataSnapshot.getValue(Conversation.class);
 

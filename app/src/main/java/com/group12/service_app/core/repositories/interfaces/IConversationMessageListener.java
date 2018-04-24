@@ -4,4 +4,5 @@ import com.group12.service_app.data.models.Message;
 
 public interface IConversationMessageListener {
     void onNewMessage(Message message);
+    void onNewMessageIncoming();
 }
