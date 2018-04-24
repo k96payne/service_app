@@ -44,6 +44,7 @@ public class listing_details_view extends AppCompatActivity implements IListingI
     private ConversationRepository conversationsRepository = new ConversationRepository();
     private ListingRepository listingRepository = new ListingRepository();
     private FirebaseDatabase database;
+    private Listing listing;
 
     private ImageView listerImageView;
     private ImageView ratingStar1ImgaeView;
@@ -69,8 +70,8 @@ public class listing_details_view extends AppCompatActivity implements IListingI
         this.dueTimeLabel = (TextView) findViewById(R.id.dueTimeLabel);
         this.dueDateLabel = (TextView) findViewById(R.id.dueDateLabel);
         this.listingResponseButton = (Button) findViewById(R.id.respondToListingButton);
+        this.listing = (Listing) getIntent().getSerializableExtra("listing");
 
-        Listing listing = (Listing) getIntent().getSerializableExtra("listing");
         String time = getIntent().getStringExtra("time");
         String date = getIntent().getStringExtra("date");
         String title = getIntent().getStringExtra("title");
@@ -123,8 +124,14 @@ public class listing_details_view extends AppCompatActivity implements IListingI
 
     public void respondDeleteButtonClicked(View view){
         if(listingResponseButton.getText().equals("Delete")){
-            String theListingId = getIntent().getStringExtra("listingID");
+            String theListingId = listing != null ? listing.id : getIntent().getStringExtra("listingID");
+
+            if(theListingId == null || theListingId.isEmpty()) {
+                theListingId = getIntent().getStringExtra("id");
+            }
+
             listingRepository.DeleteListing(theListingId);
+            finish();
         }
         else{
             //TODO

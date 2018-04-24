@@ -113,20 +113,36 @@ public class ConversationRepository {
     }
 
     public void GetConversationMessages(final IConversationMessageListener conversationListener, final Conversation conversation) {
+        GetConversationMessages(conversationListener, conversation, false);
+    }
 
-        conversationsReference.child(conversation.conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void GetConversationMessages(final IConversationMessageListener conversationListener, final Conversation conversation, final Boolean onlyNewMessages) {
+
+        DatabaseReference reference = conversationsReference.child(conversation.conversationId);
+        ValueEventListener listener = new ValueEventListener() {
+
+            private Boolean firstTimeExecuted = true;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(onlyNewMessages && firstTimeExecuted) {
+                    firstTimeExecuted = false;
+                    return;
+                }
+
                 Conversation liveConversation = dataSnapshot.getValue(Conversation.class);
 
-                for(Message message: liveConversation.messages) {
+                for (Message message : liveConversation.messages) {
                     conversationListener.onNewMessage(message);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
-        });
+        };
+
+        reference.addValueEventListener(listener);
     }
 
     public void SendMessage(final String message, final String recipient) {

@@ -35,7 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class conversation_view extends AppCompatActivity implements IConversationListener {
+public class conversation_view extends AppCompatActivity implements IConversationListener, IConversationMessageListener {
 
     private ConversationRepository conversationRepository = new ConversationRepository();
     private UserRepository userRepository = new UserRepository();
@@ -64,6 +64,9 @@ public class conversation_view extends AppCompatActivity implements IConversatio
                 @Override
                 public void onNewConversation(Conversation conversation) {
                     parent.conversation = conversation;
+
+                    conversationRepository.GetConversationMessages(parent, conversation, true);
+
                     setListViewData();
                 }
 
@@ -74,6 +77,10 @@ public class conversation_view extends AppCompatActivity implements IConversatio
                 }
             });
 
+
+        } else {
+
+            conversationRepository.GetConversationMessages(this, this.conversation, true);
 
         }
 
@@ -136,8 +143,13 @@ public class conversation_view extends AppCompatActivity implements IConversatio
     }
 
     private void sendMessage(String message, String recipient) {
+
+        if(this.conversation != null && this.conversation.messages != null) {
+            this.conversation.messages.clear();
+        }
+
         this.conversationRepository.SendMessage(message, recipient);
-        this.conversation.messages.add(new Message(currentUser.getUid(), message));
+        //this.conversation.messages.add(new Message(currentUser.getUid(), message));
         this.setListViewData();
         this.scrollToBottom();
     }
@@ -148,11 +160,17 @@ public class conversation_view extends AppCompatActivity implements IConversatio
 
     public void onNewConversation(Conversation conversation) {
         this.conversation = conversation;
+        conversationRepository.GetConversationMessages(this, conversation);
         this.setListViewData();
     }
 
     public void onNoConversations() {
 
+    }
+
+    public void onNewMessage(Message message) {
+        this.conversation.messages.add(message);
+        this.setListViewData();
     }
 
 }

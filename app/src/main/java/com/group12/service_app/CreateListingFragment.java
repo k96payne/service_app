@@ -115,22 +115,19 @@ public class CreateListingFragment extends Fragment {
                     listingRepository.SaveListingImage(listing, listingImage);
                 }
 
+                //Reset the form
+                ResetForm();
+
                 Toast.makeText(getActivity(), "Listing created successfully.", Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(getActivity(), listing_details_view.class);
+                Activity activity = getActivity();
+                Intent intent = new Intent(activity, listing_details_view.class);
                 intent.putExtra("listing", listing);
                 intent.putExtra("id", listing.id);
                 intent.putExtra("listingOwnerId", listing.ownerId);
-                getActivity().startActivity(intent);
-                listing_title.setText("");
-                listing_price.setText("");
-                listing_category.setText("");
-                listing_location.setText("");
-                listing_description.setText("");
-                listing_contact.setText("");
-                listing_time.setText("");
-                listing_date.setText("");
-                listing_image_view.setImageResource(android.R.drawable.ic_menu_camera);
+
+                //Navigate to the details activity but dismiss this one.
+                startActivity(intent);
             }
         });
 
@@ -184,5 +181,17 @@ public class CreateListingFragment extends Fragment {
         listing.time = listing_time.getText().toString();
 
         return listing;
+    }
+
+    private void ResetForm() {
+        listing_title.setText("");
+        listing_price.setText("");
+        listing_category.setText("");
+        listing_location.setText("");
+        listing_description.setText("");
+        listing_contact.setText("");
+        listing_time.setText("");
+        listing_date.setText("");
+        listing_image_view.setImageResource(android.R.drawable.ic_menu_camera);
     }
 }
