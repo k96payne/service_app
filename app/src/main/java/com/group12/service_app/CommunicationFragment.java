@@ -159,4 +159,6 @@ public class CommunicationFragment extends Fragment implements IConversationList
         this.setListViewData();
     }
 
+    public void onNoConversations() {}
+
 }

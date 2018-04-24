@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
+import com.group12.service_app.core.repositories.ConversationRepository;
 import com.group12.service_app.core.repositories.ListingRepository;
 import com.group12.service_app.core.repositories.interfaces.IListingImageListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.group12.service_app.core.repositories.ListingRepository;
 import com.group12.service_app.core.repositories.UserRepository;
 import com.group12.service_app.core.repositories.interfaces.IListingReader;
+import com.group12.service_app.data.models.Conversation;
+import com.group12.service_app.data.models.GenericConversationsListener;
 import com.group12.service_app.data.models.Listing;
 import com.group12.service_app.data.models.UserPreferences;
 import com.group12.service_app.data.models.listings;
@@ -38,6 +41,7 @@ public class listing_details_view extends AppCompatActivity implements IListingI
 
     private static final String TAG = "listing_details_view";
 
+    private ConversationRepository conversationsRepository = new ConversationRepository();
     private ListingRepository listingRepository = new ListingRepository();
     private FirebaseDatabase database;
 
@@ -128,12 +132,13 @@ public class listing_details_view extends AppCompatActivity implements IListingI
 //            DOESN'T WORK IF IT'S NOT THE USER'S FIRST CONVERSATION
             readData(new MyCallBack() {
                 @Override
-                public void onCallBack(Listing listing) {
+                public void onCallBack(final Listing listing) {
+
                     String listingsOwnerID = getIntent().getStringExtra("listingOwnerId");
                     Intent startNewConverstation = new Intent(listing_details_view.this, conversation_view.class);
-                    startNewConverstation.putExtra("conversationStart", "startConversation");
                     startNewConverstation.putExtra("recipientID", listingsOwnerID);
                     startNewConverstation.putExtra("listing", listing);
+                    startNewConverstation.putExtra("conversationStart", "startConversation");
                     startActivity(startNewConverstation);
                 }
             });

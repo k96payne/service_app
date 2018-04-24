@@ -35,7 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class conversation_view extends AppCompatActivity {
+public class conversation_view extends AppCompatActivity implements IConversationListener {
 
     private ConversationRepository conversationRepository = new ConversationRepository();
     private UserRepository userRepository = new UserRepository();
@@ -56,9 +56,25 @@ public class conversation_view extends AppCompatActivity {
         this.conversation = (Conversation)getIntent().getSerializableExtra("conversation");
         this.recipient = getIntent().getStringExtra("recipientID");
 
-        if(conversation.messages.isEmpty()) {
-            String initialMessage = "Hi, I am interested in your listing";
-            conversationRepository.SendMessage(initialMessage, recipient);
+        if(this.conversation == null || this.conversation.messages == null || this.conversation.messages.isEmpty()) {
+
+            final conversation_view parent = this;
+
+            this.conversationRepository.GetConversationWithUser(this.recipient, new IConversationListener() {
+                @Override
+                public void onNewConversation(Conversation conversation) {
+                    parent.conversation = conversation;
+                    setListViewData();
+                }
+
+                @Override
+                public void onNoConversations() {
+                    String initialMessage = "Hi, I am interested in your listing";
+                    conversationRepository.SendMessage(initialMessage, recipient, parent);
+                }
+            });
+
+
         }
 
         setListViewData();
@@ -82,6 +98,9 @@ public class conversation_view extends AppCompatActivity {
 
     private void setListViewData() {
 
+        //If we don't have a conversation, there's nothing to do here.
+        if(this.conversation == null) { return; }
+
         ArrayAdapter<Message> listViewAdapter = new ArrayAdapter<Message>( this, android.R.layout.simple_list_item_1, this.conversation.messages) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -96,6 +115,8 @@ public class conversation_view extends AppCompatActivity {
                         UserPreferences preferences = (UserPreferences) dataSnapshot.getValue(UserPreferences.class);
 
                         textView.setText(preferences.displayName + ": " + message.message);
+
+                        scrollToBottom();
                     }
 
                     @Override
@@ -123,6 +144,15 @@ public class conversation_view extends AppCompatActivity {
 
     private void scrollToBottom() {
         this.listView.setSelection(this.conversation.messages.size() - 1);
+    }
+
+    public void onNewConversation(Conversation conversation) {
+        this.conversation = conversation;
+        this.setListViewData();
+    }
+
+    public void onNoConversations() {
+
     }
 
 }

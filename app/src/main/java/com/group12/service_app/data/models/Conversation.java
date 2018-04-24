@@ -54,6 +54,10 @@ public class Conversation implements Serializable {
         return key;
     }
 
+    public boolean UserIsInConversation(String recipient) {
+        return this.recipient1.equals(recipient) || this.recipient2.equals(recipient);
+    }
+
     //Added to populate listView of CommunicationsFragment
     @Override
     public String toString(){
